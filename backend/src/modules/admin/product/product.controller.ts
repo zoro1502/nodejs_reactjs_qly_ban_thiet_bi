@@ -19,7 +19,7 @@ export class ProductController {
 
 	@Post('create')
 	@HttpCode(HttpStatus.OK)
-	// @UseGuards(RoleGuard)
+	@UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })
 	async createProduct(
 		@Body() formProduct: CreateProductDto
@@ -39,14 +39,16 @@ export class ProductController {
 
 	@Put('/edit/:id')
 	@HttpCode(HttpStatus.OK)
-	// @UseGuards(RoleGuard)
+	@UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })
 	async updateProduct(
 		@Body() formProduct: CreateProductDto,
 		@Param('id') id: number
 	) {
 		try {
-			return BaseResponse(HTTP_STATUS.success, await this.adminProdService.update(id, formProduct),'', 'successfully');
+			return BaseResponse(HTTP_STATUS.success, 
+				await this.adminProdService.update(id, formProduct),
+				'', 'successfully');
 		} catch (error) {
 			console.log('-----e@updateProduct---> ', error);
 			return BaseResponse(error.status, error.response, error.code || 'E0001', error.message);
@@ -55,7 +57,7 @@ export class ProductController {
 
 	@Get('list')
 	@HttpCode(HttpStatus.OK)
-	// @UseGuards(RoleGuard)
+	@UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })
 	async getProducts(
 		@Request() req: any
@@ -82,7 +84,7 @@ export class ProductController {
 
 	@Get('/show/:id')
 	@HttpCode(HttpStatus.OK)
-	// @UseGuards(RoleGuard)
+	@UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })
 	async show(
 		@Param('id') id: number

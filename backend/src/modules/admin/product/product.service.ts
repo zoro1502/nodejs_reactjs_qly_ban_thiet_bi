@@ -93,14 +93,16 @@ export class ProductService {
 	}
 
 	async saveProductImage(productId: number, productImages: any) {
-		const images = productImages.reduce((newImg: any, img: any) => {
-			newImg.push({
+		const images = productImages.reduce( (newImg: any, img: any) => {
+			let obj = {
 				name: img.name,
 				path: img.path,
 				product_id: productId,
 				created_at: new Date(),
 				updated_at: new Date()
-			});
+			}
+			newImg.push(obj);
+
 			return newImg;
 		}, []);
 		await this.adminProdImgRepo.createQueryBuilder()

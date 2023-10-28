@@ -57,18 +57,18 @@ export default class CreateProductDto {
 	@Min(0)
 	number: number;
 
-	@ApiProperty()
-	@IsOptional()
-	is_wholesale: boolean;
+	// @ApiProperty()
+	// @IsOptional()
+	// is_wholesale: boolean;
 
-	@ApiProperty()
-	province_id?: number;
+	// @ApiProperty()
+	// province_id?: number;
 
-	@ApiProperty()
-	district_id?: number;
+	// @ApiProperty()
+	// district_id?: number;
 
-	@ApiProperty()
-	ward_id?: number;
+	// @ApiProperty()
+	// ward_id?: number;
 
 	@ApiProperty()
 	@Max(100)
