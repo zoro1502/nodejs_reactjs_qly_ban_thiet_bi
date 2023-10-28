@@ -19,7 +19,7 @@ export class ProductController {
 
 	@Post('create')
 	@HttpCode(HttpStatus.OK)
-	@UseGuards(RoleGuard)
+	// @UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })
 	async createProduct(
 		@Body() formProduct: CreateProductDto
@@ -39,7 +39,7 @@ export class ProductController {
 
 	@Put('/edit/:id')
 	@HttpCode(HttpStatus.OK)
-	@UseGuards(RoleGuard)
+	// @UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })
 	async updateProduct(
 		@Body() formProduct: CreateProductDto,
@@ -55,7 +55,7 @@ export class ProductController {
 
 	@Get('list')
 	@HttpCode(HttpStatus.OK)
-	@UseGuards(RoleGuard)
+	// @UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })
 	async getProducts(
 		@Request() req: any
@@ -82,7 +82,7 @@ export class ProductController {
 
 	@Get('/show/:id')
 	@HttpCode(HttpStatus.OK)
-	@UseGuards(RoleGuard)
+	// @UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })
 	async show(
 		@Param('id') id: number
