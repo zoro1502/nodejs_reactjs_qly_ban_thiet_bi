@@ -122,9 +122,9 @@ export class ProductService {
 			errorData.name = ['Name is required'];
 		}
 
-		if (!formProduct.avatar || (formProduct.avatar && formProduct.avatar.trim() == '')) {
-			errorData.avatar = ['Avatar is required'];
-		}
+		// if (!formProduct.avatar || (formProduct.avatar && formProduct.avatar.trim() == '')) {
+		// 	errorData.avatar = ['Avatar is required'];
+		// }
 
 		if (!formProduct.slug || (formProduct.slug && formProduct.slug.trim() == '')) {
 			errorData.slug = ['Slug is required'];

@@ -15,8 +15,8 @@ export default class CreateProductDto {
 
 	@ApiProperty()
 	@IsString()
-	@IsNotEmpty()
-	avatar: string;
+	@IsOptional()
+	avatar?: string;
 
 	@ApiProperty()
 	@IsString()
