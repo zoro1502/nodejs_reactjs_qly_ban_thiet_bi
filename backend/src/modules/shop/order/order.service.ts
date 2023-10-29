@@ -12,6 +12,8 @@ import { Products } from 'src/entities/product.entity';
 import { TransactionOrderDto } from './dto/transactionOrder.dto';
 import { Transactions } from 'src/entities/transaction.entity';
 import { TransactionDto } from './dto/transaction.dto';
+import axios from 'axios';
+import { MailService } from 'src/modules/mail/mail.service';
 
 @Injectable()
 export class OrderService {
@@ -19,7 +21,8 @@ export class OrderService {
 		@InjectRepository(Orders) private readonly orderRepo: Repository<Orders>,
 		@InjectRepository(Products) private readonly productRepo: Repository<Products>,
 		@InjectRepository(Transactions) private readonly transRepo: Repository<Transactions>,
-		private readonly productService: ProductService
+		private readonly productService: ProductService,
+		private mailService: MailService
 	) { }
 
 	async create(createOrderDto: CreateOrderDto, user: any) {
@@ -36,10 +39,27 @@ export class OrderService {
 		createOrderDto.created_at = new Date();
 		createOrderDto.updated_at = new Date();
 
-		const newOrder = this.orderRepo.create(createOrderDto);
+		const newOrder: any = this.orderRepo.create(createOrderDto);
 		await this.orderRepo.save(newOrder);
 		await this.storeTransaction(transactionOrder, newOrder.id, user.id);
-		return await this.findOne(newOrder.id);
+		try {
+			let url_return = process.env.URL_REDIRECT;
+			let newData = {
+				order_id: newOrder.id,
+				url_return: `${url_return}/order/callback`,
+				amount: newOrder.total_price,
+				service_code: "order",
+				url_callback: `${url_return}/order/callback`
+			}
+			const response = await axios.post("https://123code.net/api/v1/payment/add", newData);
+			if (response.data.link) {
+				newOrder.link = response.data.link;
+			}
+
+		} catch (err) {
+			throw new BadRequestException({ code: 'OR0001', message: err?.message });
+		}
+		return newOrder;
 	}
 
 	async countProduct(products: any) {
@@ -92,18 +112,18 @@ export class OrderService {
 
 	}
 
-	async findAll(paging: IPaging,filter: any) {
+	async findAll(paging: IPaging, filter: any) {
 		let condition: any = {};
-		if(filter) {
-			if(filter.product_name) condition.transactions = {
+		if (filter) {
+			if (filter.product_name) condition.transactions = {
 				name: ILike(`%${filter.product_name.trim()}%`)
 			};
-			if(filter.status) condition.status = filter.status;
-			if(filter.user_id) condition.user_id = filter.user_id;
-			if(filter.shipping_status) condition.shipping_status = filter.shipping_status;
-			if(filter.receiver_name) condition.receiver_name = ILike(`%${filter.receiver_name}%`);
-			if(filter.receiver_email) condition.receiver_email = ILike(`%${filter.receiver_email}%`);
-			if(filter.receiver_phone) condition.receiver_phone = ILike(`%${filter.receiver_phone}%`);
+			if (filter.status) condition.status = filter.status;
+			if (filter.user_id) condition.user_id = filter.user_id;
+			if (filter.shipping_status) condition.shipping_status = filter.shipping_status;
+			if (filter.receiver_name) condition.receiver_name = ILike(`%${filter.receiver_name}%`);
+			if (filter.receiver_email) condition.receiver_email = ILike(`%${filter.receiver_email}%`);
+			if (filter.receiver_phone) condition.receiver_phone = ILike(`%${filter.receiver_phone}%`);
 		}
 		const [orders, total] = await this.orderRepo.findAndCount({
 			where: condition,
@@ -123,7 +143,7 @@ export class OrderService {
 
 	async findOne(id: number) {
 		return await this.orderRepo.findOne({
-			where: {id:id},
+			where: { id: id },
 			relations: {
 				user: true,
 				transactions: true
@@ -137,5 +157,26 @@ export class OrderService {
 
 	remove(id: number) {
 		return `This action removes a #${id} order`;
+	}
+
+	async webhook(req: any, res: any) {
+		let id = req.query.vnp_TxnRef;
+		console.log("order id------> ", id);
+		if (req.query.vnp_ResponseCode == "00") { 
+			// req.query.vnp_ResponseCode === "00" thanh toán thành công
+			const order = await this.findOne(id);
+			console.log("order=======> ", order);
+			order.status = 2 ;// Đã thanh toán
+			this.orderRepo.update(order.id, {status: 2, updated_at: new Date()});
+			if (order) {
+				this.mailService.sendOrderData(order)
+			}
+			
+
+			return res.redirect('http://localhost:3015/payment/success');
+		}
+
+		return res.redirect('http://localhost:3015/payment/error');
+		// return res.status(200).json({ data: req.query, status: 200 });
 	}
 }

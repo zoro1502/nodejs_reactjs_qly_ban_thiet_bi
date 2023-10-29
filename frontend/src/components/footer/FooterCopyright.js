@@ -11,7 +11,7 @@ const FooterCopyright = ({ footerLogo, spaceBottomClass, colorClass }) => {
     >
       <div className="footer-logo me-2">
         <Link to={process.env.PUBLIC_URL + "/"}>
-		<h2 className="font-weight-bold">Đồ ngọt shop</h2>
+		<h2 className="font-weight-bold">Cửa hàng thiết bị</h2>
         </Link>
       </div>
       {/* <p>

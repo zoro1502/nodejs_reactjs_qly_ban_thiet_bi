@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards, Request, Response } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -8,14 +8,15 @@ import * as _ from 'lodash';
 import { BadRequestException } from 'src/helpers/response/badRequest';
 import { BaseResponse, HTTP_STATUS, IPaging } from 'src/helpers/helper';
 import { ApiTags } from '@nestjs/swagger';
+import { request } from 'http';
 
 @Controller('order')
 @ApiTags('Shop order')
-@UseGuards(JwtGuard)
 export class OrderController {
 	constructor(private readonly orderService: OrderService) { }
 
 	@Post('create')
+	@UseGuards(JwtGuard)
 	async create(@Request() req: any, @Body() createOrderDto: CreateOrderDto) {
 		try {
 			if(_.isEmpty(createOrderDto)) {
@@ -23,7 +24,9 @@ export class OrderController {
 			}
 			const user = req.user;
 			
-			return BaseResponse(HTTP_STATUS.success, await this.orderService.create(createOrderDto, user),'', 'successfully');
+			return BaseResponse(HTTP_STATUS.success, 
+				await this.orderService.create(createOrderDto, user)
+				,'', 'successfully');
 		} catch (error) {
 			console.log('e@createProduct----> ', error);
 			return BaseResponse(error.status, error.response, error.code || 'E0001', error.message);
@@ -31,6 +34,7 @@ export class OrderController {
 	}
 
 	@Get('list')
+	@UseGuards(JwtGuard)
 	async findAll(@Request() req: any) {
 		
 		try {
@@ -55,7 +59,13 @@ export class OrderController {
 	}
 
 	@Get('show/:id')
+	@UseGuards(JwtGuard)
 	findOne(@Param('id') id: string) {
 		return this.orderService.findOne(+id);
+	}
+
+	@Get('/callback')
+	async webhook(@Request() req: any, @Response() res: any) {
+		return await this.orderService.webhook(req, res);
 	}
 }

@@ -37,7 +37,7 @@ export class UploadController {
     uploadFile(@UploadedFile() file: Express.Multer.File) {
         try {
 			let URL = process.env.URL_IMAGE;
-            file.destination = URL + file.filename;
+            file.destination = URL + `/${file.filename}`;
             return BaseResponse(HTTP_STATUS.success, file, '', 'Successful');
         } catch (e) {
             console.log('get category list ---------->', e.message);

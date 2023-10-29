@@ -15,7 +15,6 @@ export class MiddlewareMiddleware implements NestMiddleware {
 			if (_.isEmpty(access_token)) {
 				throw new BadRequestException({ code: 'LG0401' });
 			}
-
 			let token = access_token.replace(/bearer\s+/i, '');
 			const payload: any = await this.jwtService.decode(token);
 			if(_.isEmpty(payload)) {

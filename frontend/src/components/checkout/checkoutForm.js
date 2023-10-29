@@ -43,6 +43,9 @@ export const CheckoutForm = ( props ) =>
 				await timeDelay(1000);
 				if(response?.status === 'success') {
 					message.success('Checkout successfully!');
+					if(response?.data?.link) {
+						window.open(response?.data?.link, '_blank');
+					}
 					dispatch(deleteAllFromCart(addToast));
 				} else {
 					message.error(response?.message || 'error');

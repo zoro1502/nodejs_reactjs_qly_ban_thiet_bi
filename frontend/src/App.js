@@ -37,6 +37,7 @@ const Checkout = lazy( () => import( "./pages/other/Checkout" ) );
 const MyOrder = lazy( () => import( "./pages/other/MyOrder" ) );
 
 const NotFound = lazy( () => import( "./pages/other/NotFound" ) );
+const PaymentStatus = lazy( () => import( "./pages/other/PaymentStatus" ) );
 
 const App = ( props ) =>
 {
@@ -105,6 +106,10 @@ const App = ( props ) =>
 								<Route
 									path={ process.env.PUBLIC_URL + "/about" }
 									component={ About }
+								/>
+								<Route
+									path={ process.env.PUBLIC_URL + "/payment/:type" }
+									component={ PaymentStatus }
 								/>
 								{/* <Route
                   path={process.env.PUBLIC_URL + "/contact"}

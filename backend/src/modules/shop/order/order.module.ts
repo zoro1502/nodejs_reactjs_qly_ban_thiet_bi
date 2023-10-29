@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { OrderController } from './order.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,6 +11,7 @@ import { Role } from 'src/entities/role.entity';
 import { Permission } from 'src/entities/permission.entity';
 import { UserRole } from 'src/entities/user-roles.entity';
 import { Transactions } from 'src/entities/transaction.entity';
+import { MailModule } from 'src/modules/mail/mail.module';
 
 @Module({
 	imports: [
@@ -23,7 +24,8 @@ import { Transactions } from 'src/entities/transaction.entity';
 			Permission,
 			UserRole,
 			Transactions
-		])
+		]),
+		forwardRef(() => MailModule),
 	],
 	controllers: [OrderController],
 	providers: [OrderService, ProductService]

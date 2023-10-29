@@ -15,6 +15,7 @@ import { UserService } from '../admin/user/user.service';
 import { RegisterAdminDto } from './dtos/register-admin.dto';
 import { ValidateService } from '../admin/user/services/validate.service';
 import { RegisterDto } from './dtos/register.dto';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +24,8 @@ export class AuthService {
 		@InjectRepository(User) private readonly userRepo: Repository<User>,
 		private readonly jwtService: JwtService,
 		private readonly userService: UserService,
-		private readonly validateService: ValidateService
+		private readonly validateService: ValidateService,
+		private mailService: MailService
 	) {
 
 	}
@@ -101,12 +103,13 @@ export class AuthService {
 	}
 
 	async register(data: RegisterDto) {
-		data.status = 1;
-		await this.validateService.validateUser(data, true);
-		delete data.password_cf;
-		data.password = await bcrypt.hash(data.password.trim(), 10);
-		const newData = await this.userRepo.create(data);
-		await this.userRepo.save(newData);
-		return newData;
+		// data.status = 1;
+		// await this.validateService.validateUser(data, true);
+		// delete data.password_cf;
+		// data.password = await bcrypt.hash(data.password.trim(), 10);
+		// const newData = await this.userRepo.create(data);
+		// await this.userRepo.save(newData);
+		this.mailService.sendUserConfirmation(data);
+		return data;
 	}
 }

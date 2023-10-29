@@ -28,6 +28,6 @@ import { OrderModule } from './order/order.module';
 export class ShopModule implements NestModule{
 	configure(consumer: MiddlewareConsumer) {
         consumer.apply(MiddlewareMiddleware)
-            .forRoutes('order', 'profile');
+            .forRoutes('profile');
     }
  }
