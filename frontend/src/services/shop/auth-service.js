@@ -8,9 +8,12 @@ export const Auth_Service = {
 		return await postMethod('auth/register', data);
 	},
 	profile: async () => {
-		return await getMethod('auth/profile');
+		return await getMethod('auth/info');
 	},
 	updateProfile: async (data) => {
-		return await putMethod('auth/profile', data);
+		return await putMethod('auth/info', data);
+	},
+	changePassword: async (data) => {
+		return await putMethod('auth/info/change-password', data);
 	}
 }

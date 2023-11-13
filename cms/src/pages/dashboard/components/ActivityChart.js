@@ -3,11 +3,11 @@ import ApexCharts from "react-apexcharts";
 
 const series = [{
   name: 'Your Activity',
-  type: 'column',
+  type: 'area',
   data: [350, 275, 375, 375, 300, 225, 275]
 }, {
   name: 'Your Goal',
-  type: 'line',
+  type: 'collumn',
   data: [400, 350, 450, 400, 350, 300, 350]
 
 }];
@@ -16,13 +16,13 @@ const chartSettings = {
   colors: ["#FFCA41", "#43BC13"],
   chart: {
     height: 350,
-    type: 'line',
+    type: 'smooth',
     toolbar: {
       show: false,
     },
   },
   stroke: {
-    curve: "straight",
+    curve: "smooth",
     width: [0, 1]
   },
   dataLabels: {

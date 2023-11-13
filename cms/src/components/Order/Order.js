@@ -30,17 +30,23 @@ export const Orders = ( props ) =>
 
 	const genStatus = ( status ) =>
 	{
-		if ( status === 1 ) return <div className="text-warning">Chờ duyệt</div>;
-		else if ( status === 2 ) return <div className="text-primary">Đã duyệt</div>;
-		else if ( status === 3 ) return <div className="text-success">Hoàn thành</div>;
-		else return <div className="text-danger">Hủy</div>;
+		if ( status === 1 ) return <div className="text-warning">Pending</div>;
+		else if ( status === 2 ) return <div className="text-primary">Approved</div>;
+		else if ( status === 3 ) return <div className="text-success">Success</div>;
+		else return <div className="text-danger">Reject/Cancel</div>;
+	}
+
+	const genPaymentStatus = ( status ) =>
+	{
+		if ( status === 1 ) return <div className="text-success">Paid</div>;
+		return <div className="text-primary">Unpaid</div>;
 	}
 
 	const genShippingStatus = ( status ) =>
 	{
-		if ( status === 1 ) return <div className="text-warning">Chờ giao</div>;
-		else if ( status === 2 ) return <div className="text-primary">Đang giao</div>;
-		else return <div className="text-success">Đã giao</div>;
+		if ( status === 1 ) return <div className="text-warning">Waiting for delivery</div>;
+		else if ( status === 2 ) return <div className="text-primary">Delivering</div>;
+		else return <div className="text-success">Delivered</div>;
 	}
 
 	return (
@@ -62,6 +68,7 @@ export const Orders = ( props ) =>
 								<th className="text-nowrap text-right">Total price</th>
 								<th className="text-nowrap text-right">Total discount</th>
 								<th className="text-nowrap text-center">Status</th>
+								<th className="text-nowrap text-center">Payment Status</th>
 								<th className="text-nowrap text-center">Shipping status</th>
 								<th className="text-nowrap text-center">Action</th>
 							</tr>
@@ -74,12 +81,13 @@ export const Orders = ( props ) =>
 										< tr key={ key } className="table-product">
 											<td>{ item.id }</td>
 											<td>
-												<span className="font-weight-bold">Username:</span><span> { item.receiver_name } <br /></span>
-												<span className="font-weight-bold">Phone:</span><span> { item.receiver_phone } <br /></span>
+											<span className="font-weight-bold">Username:</span><span> { item.receiver_name } <br /></span>
+													<span className="font-weight-bold">Phone:</span><span> { item.receiver_phone } <br /></span>
 											</td>
 											<td className="text-right">{ customNumber( item.total_price, ',', '₫' ) }</td>
 											<td className="text-right">{ customNumber( item.total_discount, ',', '₫' ) }</td>
 											<td className="text-center">{ genStatus( item.status ) }</td>
+											<td className="text-center">{ genPaymentStatus( item.payment_status ) }</td>
 											<td className="text-center">{ genShippingStatus( item.shipping_status ) }</td>
 											<td className="text-center">
 
@@ -102,7 +110,7 @@ export const Orders = ( props ) =>
 
 														{ item.status === 4 &&
 															<DropdownItem href="" className="text-nowrap pt-2">
-																Hủy
+																Reject/Cancel
 															</DropdownItem>
 														} */}
 													</DropdownMenu>

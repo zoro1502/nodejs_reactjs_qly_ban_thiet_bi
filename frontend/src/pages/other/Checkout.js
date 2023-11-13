@@ -7,7 +7,7 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { getDiscountPrice } from "../../helpers/product";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-import { customNumber } from "../../helpers/func";
+import { checkTimeNow, customNumber } from "../../helpers/func";
 import { CheckoutForm } from "../../components/checkout/checkoutForm";
 
 const Checkout = ({ location, cartItems, currency }) => {
@@ -22,7 +22,7 @@ const Checkout = ({ location, cartItems, currency }) => {
     return (
         <Fragment>
             <MetaTags>
-                <title>Cake Shop Checkout</title>
+                <title>Drug store Checkout</title>
                 <meta
                     name="description"
                     content="Checkout page of shop react minimalist eCommerce template."
@@ -60,10 +60,10 @@ const Checkout = ({ location, cartItems, currency }) => {
                                                 <div className="your-order-middle">
                                                     <ul>
                                                         {cartItems.map((cartItem, key) => {
-                                                            const discountedPrice = Number(getDiscountPrice(
+                                                            const discountedPrice = checkTimeNow(cartItem?.sale_to) ? Number(getDiscountPrice(
                                                                 cartItem.price,
-                                                                cartItem.discount
-                                                            ));
+                                                                cartItem.sale
+                                                            )) : null;
                                                             const finalProductPrice = Number((
                                                                 cartItem.price 
                                                             ).toFixed(2));

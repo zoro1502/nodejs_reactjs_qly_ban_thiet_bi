@@ -1,9 +1,8 @@
 // @ts-nocheck
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Product, getProductsByFilter } from "../../services/productService.js";
+import { getProductsByFilter } from "../../services/productService.js";
 import { Products } from "../../components/Products/Products.js";
-import { message } from "antd";
 
 export const ProductContainer = () =>
 {
@@ -24,21 +23,6 @@ export const ProductContainer = () =>
 		getProductsByFilter(filter, setProducts, setPaging, dispatch);
 	}
 
-	const deleteData = async(id) => {
-		try {
-			const rs = await Product.delete(id);
-			if(rs && rs.status === 'success') {
-				message.success('Delete successfully!');
-				await getProductsByFilters({page: 1, page_size: 20});
-
-			} else {
-				message.error(rs.message);
-			}
-		} catch (error) {
-			message.error(error.message);
-		}
-	}
-
 
 	return <Products 
 	products={products} 
@@ -48,6 +32,5 @@ export const ProductContainer = () =>
 	setParams={setParams}
 	setPaging={setPaging}
 	setProducts={setProducts} 
-	deleteData={deleteData}
 	/>
 };

@@ -12,9 +12,13 @@ import { Pagination } from "antd";
 import { Link } from "react-router-dom/cjs/react-router-dom.min.js";
 import { DEFAULT_USER, EMPTY_IMG } from "../../helpers/constant/image.js";
 import { UserSearch } from "./UserSearch.js";
-import { DeleteOutlined } from '@ant-design/icons';
+import { buildImage, onErrorImage, onErrorUser } from "../../services/common.js";
 export const UserCpn = ( props ) =>
 {
+	const errorImg = ( e ) =>
+	{
+		e.currentTarget.src = DEFAULT_USER;
+	}
 
 	const genStatus = ( status ) =>
 	{
@@ -44,7 +48,7 @@ export const UserCpn = ( props ) =>
 			<Widget>
 				<div className="p-5">
 					<div className="mb-3">
-						<Link to="/product/create" className="btn btn-info">
+						<Link to="/user/create" className="btn btn-info">
 							<span className="d-flex align-items-center"><i className="eva eva-plus mr-2"></i> Create</span>
 						</Link>
 					</div>
@@ -59,7 +63,7 @@ export const UserCpn = ( props ) =>
 								<th>ID</th>
 								<th className="text-nowrap">Avatar</th>
 								<th className="text-nowrap">User</th>
-								<th className="text-nowrap">User name</th>
+								{/* <th className="text-nowrap">User name</th> */}
 								<th className="text-nowrap">Email</th>
 								<th className="text-nowrap">Role</th>
 								<th className="text-nowrap">Type</th>
@@ -78,10 +82,7 @@ export const UserCpn = ( props ) =>
 											<td className="d-flex align-items-center">
 												<img width="70" height="70"
 													style={ { border: "0.5px solid gray", borderRadius: '5px' } }
-													src={ item.avatar || DEFAULT_USER } alt={ item.name } onError={ ( e ) =>
-													{
-														e.currentTarget.src = DEFAULT_USER
-													} } />
+													src={ buildImage(item.avatar)} alt={ item.name } onError={ onErrorUser } />
 											</td>
 											<td className="text-gray-900">
 												<div className="d-flex">
@@ -105,34 +106,30 @@ export const UserCpn = ( props ) =>
 													<div className="ml-2 text-break" style={ { minWidth: '100px' } }>{ item.phone || 'N/A' }</div>
 												</div>
 											</td>
-											<td className="text-gray-900">
+											{/* <td className="text-gray-900">
 												{ item.username }
-											</td>
+											</td> */}
 											<td className="text-gray-900">
 												{ item.email }
 											</td>
 											<td className="text-gray-900 text-break" style={ { minWidth: "100px" } }>
-												{ item.roles.length > 0 &&
+												{ item.roles?.length > 0 &&
 													<div className="d-flex">
 														{ renderRole( item.roles ) }
 													</div>
 												}
 											</td>
-											<td className="text-gray-900 text-break">
-												{ item.type === 1 ? 'ADM' : 'PUB' }
+											<td className="text-gray-900 text-nowrap ">
+												{ item.type }
 											</td>
-											<td className="text-gray-900">{ genStatus( item.status ) }</td>
+											<td className="text-gray-900 text-nowrap">{ genStatus( item.status ) }</td>
 											<td className="text-gray-900 text-nowrap">
 												{ item.created_at ? customDate( item.created_at, 'DD/MM/yyyy' ) : '' }
 											</td>
 											<td>
-												<div className="d-flex">
-													<Link to={ `/user/edit/${ item.id }` } className="d-flex justify-content-center">
-														<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
-													</Link>
-													{/* <DeleteOutlined className="mx-2" /> */}
-												</div>
-
+												<Link to={ `/user/edit/${ item.id }` } className="d-flex justify-content-center">
+													<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
+												</Link>
 											</td>
 										</tr>
 									)

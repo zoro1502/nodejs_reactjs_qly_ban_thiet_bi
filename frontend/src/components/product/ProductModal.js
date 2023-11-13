@@ -101,8 +101,8 @@ function ProductModal(props) {
             <div className="col-md-5 col-sm-12 col-xs-12">
               <div className="product-large-image-wrapper">
                 <Swiper {...gallerySwiperParams}>
-                  {product.product_images &&
-                    product.product_images.map((single, key) => {
+                  {product.products_images &&
+                    product.products_images.map((single, key) => {
                       return (
                         <div key={key}>
                           <div className="single-image">
@@ -119,8 +119,8 @@ function ProductModal(props) {
               </div>
               <div className="product-small-image-wrapper mt-15">
                 <Swiper {...thumbnailSwiperParams}>
-                  {product.product_images &&
-                    product.product_images.map((single, key) => {
+                  {product.products_images &&
+                    product.products_images.map((single, key) => {
                       return (
                         <div key={key}>
                           <div className="single-image">

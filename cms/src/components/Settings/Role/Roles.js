@@ -119,7 +119,8 @@ export const Roles = ( props ) =>
 													<Link to={ `/setting/role/edit/${ item.id }` } className="d-flex justify-content-center">
 														<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
 													</Link>
-													<DeleteOutlined onClick={ () => deleteData( item.id ) } className="mx-2" style={ { fontSize: "16px" } } />
+													{/* <DeleteOutlined onClick={ () => deleteData( item.id ) } 
+													className="mx-2" style={ { fontSize: "16px" } } /> */}
 												</div>
 											</td>
 

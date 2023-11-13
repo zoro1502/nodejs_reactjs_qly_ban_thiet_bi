@@ -1,3 +1,5 @@
+import { DEFAULT_IMAGE, DEFAULT_IMG } from "../helpers/constant";
+
 export const getItem = ( key ) =>
 {
 	return localStorage.getItem( key ) || null;
@@ -16,7 +18,8 @@ export const removeItem = ( key ) =>
 export const buildFilter = ( values ) =>
 {
 	delete values.total;
-	delete values.total_page;
+	delete values.total_pages;
+	delete values.count;
 	let params = {};
 	if ( values )
 	{
@@ -79,3 +82,36 @@ export const onFieldsChange = ( e, form, ee = null ) =>
 		form.setFieldsValue( fieldValue );
 	}
 }
+
+export const buildImage = ( img, is_user = false ) =>
+{
+	if ( img )
+	{
+		return process.env.REACT_APP_URL_UPLOAD + "upload/" + img;
+
+	} 
+	else return is_user ? DEFAULT_IMG : DEFAULT_IMAGE;
+}
+
+export const onErrorImage = (e)=> {
+	e.currentTarget.src = DEFAULT_IMAGE;
+}
+
+export const onErrorUser = (e)=> {
+	e.currentTarget.src = DEFAULT_IMG;
+}
+// }
+// export const onErrorUser = (e)=> {
+// 	e.currentTarget.src = DEFAULT_USER;
+// }
+
+export const VALIDATE_FORM = {
+	required: '${label} is required!',
+	types: {
+		email: '${label} is not a valid email!',
+		number: '${label} is not a valid number!',
+	},
+	number: {
+		range: '${label} must be between ${min} and ${max}',
+	},
+};

@@ -6,7 +6,8 @@ import { useToasts } from "react-toast-notifications";
 import { getDiscountPrice } from "../../helpers/product";
 import Rating from "./sub-components/ProductRating";
 import ProductModal from "./ProductModal";
-import { customNumber } from "../../helpers/func";
+import { checkTimeNow, customNumber } from "../../helpers/func";
+import { buildImage, onErrorImage } from "../../services";
 
 const ProductGridSingle = ( {
 	product,
@@ -24,7 +25,7 @@ const ProductGridSingle = ( {
 	const [ modalShow, setModalShow ] = useState( false );
 	const { addToast } = useToasts();
 
-	const discountedPrice = getDiscountPrice( product.price, product.sale );
+	const discountedPrice = checkTimeNow(product?.sale_to) ? getDiscountPrice( product.price, product.sale ) : 0;
 	const finalProductPrice = +( product.price * currency.currencyRate ).toFixed( 2 );
 	const finalDiscountedPrice = +(
 		discountedPrice * currency.currencyRate
@@ -44,14 +45,16 @@ const ProductGridSingle = ( {
 						<Link to={ process.env.PUBLIC_URL + "/product/" + product.id }>
 							<img
 								className="default-img"
-								src={ product.avatar }
-								alt=""
+								src={ buildImage( product.avatar ) }
+								alt={ buildImage( product.avatar ) }
+								onError={ onErrorImage }
 							/>
-							{ product.product_images?.length > 0 ? (
+							{ product?.products_images?.length > 0 ? (
 								<img
 									className="hover-img"
-									src={ product.product_images[ 0 ].path }
-									alt=""
+									src={ product.products_images[ 0 ].path }
+									alt={ buildImage( product.products_images[ 0 ].path ) }
+									onError={ onErrorImage }
 								/>
 							) : (
 								""
@@ -59,7 +62,7 @@ const ProductGridSingle = ( {
 						</Link>
 						{ product.sale || product.hot === 1 ? (
 							<div className="product-img-badges">
-								{ product.sale ? (
+								{ product.sale && checkTimeNow(product?.sale_to) ? (
 									<span className="pink">-{ product.sale }%</span>
 								) : (
 									""

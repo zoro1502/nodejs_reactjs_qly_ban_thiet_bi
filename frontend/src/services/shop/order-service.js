@@ -9,7 +9,7 @@ export const ORDER_SERVICE = {
 		return await getMethod('order/list', params);
 	},
 
-	show: async () => {
-		return await getMethod('order/show/:id');
+	show: async (id) => {
+		return await getMethod('order/show/' + id);
 	}
 }

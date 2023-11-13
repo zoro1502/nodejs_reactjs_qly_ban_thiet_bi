@@ -15,15 +15,15 @@ export const OrderSearch = ( props ) =>
 	useEffect( () =>
 	{
 		setStatus( [
-			{ value: 1, label: "Chờ duyệt" },
-			{ value: 2, label: "Đã duyệt" },
-			{ value: 3, label: "Hoàn thành" },
-			{ value: 4, label: "Hủy" }
+			{ value: 1, label: "Pending" },
+			{ value: 2, label: "Approved" },
+			{ value: 3, label: "Success" },
+			{ value: 4, label: "Reject/Cancel" }
 		] );
 		setShippingStatus( [
-			{ value: 1, label: "Chờ giao" },
-			{ value: 2, label: "Đang giao" },
-			{ value: 3, label: "Đã giao" },
+			{ value: 1, label: "Waiting for delivery" },
+			{ value: 2, label: "Delivering" },
+			{ value: 3, label: "Delivered" },
 		] );
 	}, [] )
 

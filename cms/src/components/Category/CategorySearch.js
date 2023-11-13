@@ -15,12 +15,12 @@ export const CategorySearch = ( props ) =>
 	{
 		setStatus( [
 			{ value: 1, label: "Active" },
-			{ value: -1, label: "Inactive" }
+			{ value: 0, label: "Inactive" }
 		] );
 
 		setHot( [
 			{ value: 1, label: "Hot" },
-			{ value: -1, label: "Not hot" }
+			{ value: 0, label: "Not hot" }
 		] );
 	}, [] )
 
@@ -35,13 +35,13 @@ export const CategorySearch = ( props ) =>
 		{
 			value.id = value.id.trim();
 		}
-		props.getDatasByFilter( { ...props.paging, page: 1, ...value } );
+		props.getDatasByFilter( { page: 1, page_size: props?.paging?.page_size, ...value } );
 		props.setParams( value );
 	}
 
 	const resetForm = () =>
 	{
-		props.getDatasByFilter( { ...props.paging, page: 1 } );
+		props.getDatasByFilter( { page: 1, page_size: props?.paging?.page_size } );
 		props.setParams( {
 			id: null,
 			name: null,
@@ -77,7 +77,7 @@ export const CategorySearch = ( props ) =>
 						/>
 					</Form.Item>
 				</div>
-				<div className="col-md-3 mb-2">
+				{/* <div className="col-md-3 mb-2">
 					<Form.Item name="hot" label="Hot" className='mb-0 d-block'>
 						<Select
 							placeholder="Select hot"
@@ -85,7 +85,7 @@ export const CategorySearch = ( props ) =>
 							options={ hot }
 						/>
 					</Form.Item>
-				</div>
+				</div> */}
 			</div>
 
 			<button type="submit" className="btn btn-primary" style={ { marginRight: 10, padding: '10px 10px' } }>

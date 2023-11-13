@@ -15,12 +15,12 @@ export const ProductSearch = ( props ) =>
 	{
 		setStatus( [
 			{ value: 1, label: "Active" },
-			{ value: -1, label: "Inactive" }
+			{ value: 0, label: "Inactive" }
 		] );
 
 		setHot( [
 			{ value: 1, label: "Hot" },
-			{ value: -1, label: "Not hot" }
+			{ value: 0, label: "Not hot" }
 		] );
 	}, [] )
 
@@ -36,13 +36,13 @@ export const ProductSearch = ( props ) =>
 		{
 			value.id = value.id.trim();
 		}
-		props.getProductsByFilters( { ...props.paging, page: 1, ...value } );
+		props.getProductsByFilters( { page: 1, page_size: props?.paging?.page_size, ...value } );
 		props.setParams( value );
 	}
 
 	const resetForm = () =>
 	{
-		props.getProductsByFilters( { ...props.paging, page: 1 } );
+		props.getProductsByFilters( { page: 1, page_size: props?.paging?.page_size } );
 		props.setParams( {
 			id: null,
 			name: null,

@@ -4,12 +4,15 @@ import { ProductForm } from "./components/Products/ProductForm";
 import { Permissions } from "./components/Settings/Permission/Permissions";
 import { RoleForm } from "./components/Settings/Role/RoleForm";
 import { Roles } from "./components/Settings/Role/Roles";
+import { SlideForm } from "./components/Slide/SlideForm";
 import { UserForm } from "./components/User/UserForm";
+import {PageVoting} from "./components/vote/voteList";
 import { CategoryContainer } from "./pages/category/CategoryContainer";
 import Dashboard from "./pages/dashboard/Dashboard";
 import { OrderContainer } from "./pages/order/OrderContainer";
 import { ProductContainer } from "./pages/products/ProductContainer";
 import { ProfileContainer } from "./pages/profile/ProfileContainer";
+import { SlidesContainer } from "./pages/slides/SlidesContainer";
 import { UserContainer } from "./pages/user/UserContainer";
 
 export const ROUTERS = [
@@ -24,13 +27,13 @@ export const ROUTERS = [
 		path: '/product/list',
 		exact: true,
 		redirectFrom: '/product', 
-		title: 'Danh sách sản phẩm',
+		title: 'List product',
 		component: ProductContainer,
 	},
 	{
 		path: '/product/create',
 		exact: true,
-		title: 'Thêm mới sản phẩm',
+		title: 'Add new product',
 		redirectFrom: null, 
 		component: ProductForm,
 	},
@@ -38,7 +41,7 @@ export const ROUTERS = [
 		path: '/product/edit/:id',
 		exact: true,
 		redirectFrom: null, 
-		title: 'Chỉnh sửa sản phẩm',
+		title: 'Edit product',
 		component: ProductForm,
 	},
 	{
@@ -52,44 +55,66 @@ export const ROUTERS = [
 		path: '/user/create',
 		exact: true,
 		redirectFrom: '/user', 
-		title: 'Tạo mới',
+		title: 'Create',
 		component: UserForm,
 	},
 	{
 		path: '/user/edit/:id',
 		exact: true,
 		redirectFrom: '/user', 
-		title: 'Chỉnh sửa',
+		title: 'Edit',
 		component: UserForm,
 	},
 	{
 		path: '/category/list',
 		exact: true,
 		redirectFrom: '/category', 
-		title: 'Danh sách',
+		title: 'List',
 		component: CategoryContainer,
 	},
 	{
 		path: '/category/create',
 		exact: true,
 		redirectFrom: '/category', 
-		title: 'Tạo mới',
+		title: 'Create',
 		component: CategoryForm,
 	},
 	{
 		path: '/category/edit/:id',
 		exact: true,
 		redirectFrom: '/category', 
-		title: 'Chỉnh sửa',
+		title: 'Edit',
 		component: CategoryForm,
+	},
+	{
+		path: '/slide/list',
+		exact: true,
+		redirectFrom: '/slide', 
+		title: 'List',
+		component: SlidesContainer,
+	},
+	{
+		path: '/slide/create',
+		exact: true,
+		redirectFrom: '/slide', 
+		title: 'Create',
+		component: SlideForm,
+	},
+	{
+		path: '/slide/edit/:id',
+		exact: true,
+		redirectFrom: '/slide', 
+		title: 'Edit',
+		component: SlideForm,
 	},
 	{
 		path: '/order/list',
 		exact: true,
 		redirectFrom: '/order', 
-		title: 'Danh sách',
+		title: 'List',
 		component: OrderContainer,
 	},
+	
 	{
 		path: '/order/view/:id',
 		exact: true,
@@ -138,8 +163,16 @@ export const ROUTERS = [
 	{
 		path: '/profile',
 		exact: true,
-		redirectFrom: '/role', 
+		// redirectFrom: '/role', 
 		title: 'Profile',
 		component: ProfileContainer,
+	},
+
+	{
+		path: '/reviews',
+		exact: true,
+		// redirectFrom: '/role', 
+		title: 'Reviews',
+		component: PageVoting,
 	},
 ]

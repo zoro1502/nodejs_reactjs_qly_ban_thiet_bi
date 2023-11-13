@@ -11,8 +11,8 @@ import { customDate } from "../../helpers/common/common.js";
 import { CategorySearch } from "./CategorySearch.js";
 import { Pagination } from "antd";
 import { Link } from "react-router-dom/cjs/react-router-dom.min.js";
-import { DEFAULT_IMG, EMPTY_IMG } from "../../helpers/constant/image.js";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DEFAUT_IMG, EMPTY_IMG } from "../../helpers/constant/image.js";
+import { buildImage, onErrorImage } from "../../services/common.js";
 export const Categories = ( props ) =>
 {
 
@@ -26,7 +26,6 @@ export const Categories = ( props ) =>
 			default: return <div className="text-warning">Inactive</div>
 		}
 	}
-
 	return (
 		<>
 			<Widget>
@@ -48,7 +47,7 @@ export const Categories = ( props ) =>
 								<th className="text-nowrap">Image</th>
 								<th className="text-nowrap">Name</th>
 								<th className="text-nowrap">Slug</th>
-								<th className="text-nowrap">Hot</th>
+								{/* <th className="text-nowrap">Hot</th> */}
 								<th className="text-nowrap">Status</th>
 								<th className="text-nowrap">Time</th>
 								<th className="text-nowrap text-center">Action</th>
@@ -65,10 +64,7 @@ export const Categories = ( props ) =>
 												<img width="70" height="70"
 													id={ key }
 													style={ { border: "0.5px solid gray", borderRadius: '5px' } }
-													src={ item.avatar || DEFAULT_IMG } alt={ item.name } onError={ ( e ) =>
-													{
-														e.currentTarget.src = DEFAULT_IMG
-													} } />
+													src={ buildImage(item.avatar) } alt={ item.name } onError={ onErrorImage } />
 											</td>
 											<td className="text-gray-900">
 												<span className="text-break" style={ { minWidth: '100px' } }>{ item.name }</span>
@@ -76,21 +72,17 @@ export const Categories = ( props ) =>
 											<td className="text-gray-900">
 												<span className="text-break" style={ { minWidth: '100px' } }>{ item.slug }</span>
 											</td>
-											<td className="text-gray-900">
+											{/* <td className="text-gray-900">
 												{ item.hot === 1 && <span className="text-danger">Hot</span> }
-											</td>
+											</td> */}
 											<td className="text-gray-900">{ genStatus( item.status ) }</td>
 											<td className="text-gray-900 text-nowrap">
 												{ customDate( item.created_at, 'DD/MM/yyyy' ) }
 											</td>
 											<td>
-												<div className="d-flex">
-													<Link to={ `/category/edit/${ item.id }` } className="d-flex justify-content-center">
-														<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
-													</Link>
-													<DeleteOutlined onClick={() => props.deleteData(item.id)} className="mx-2" style={ { fontSize: "16px" } } />
-												</div>
-
+												<Link to={ `/category/edit/${ item.id }` } className="d-flex justify-content-center">
+													<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
+												</Link>
 											</td>
 										</tr>
 									)

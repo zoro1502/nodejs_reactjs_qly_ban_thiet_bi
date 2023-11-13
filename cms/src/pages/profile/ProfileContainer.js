@@ -13,13 +13,17 @@ export const ProfileContainer = () => {
     const [profileData, setProfileData] = useState();
 
     useEffect(async () => {
-        const response = await AUTH_SERVICE.getProfile();
-        if (response.status == 'success') {
-            setProfileData(response.data);
-        } else {
-            message.error(response.message || 'error');
-        }
+        getProfile()
     }, []);
+
+	const getProfile = async () => {
+		const response = await AUTH_SERVICE.getProfile();
+        if (response?.status == 'success') {
+            setProfileData(response?.data);
+        } else {
+            message.error(response?.message || 'error');
+        }
+	}
 
     const items = [
         {
@@ -27,6 +31,7 @@ export const ProfileContainer = () => {
             label: `Profile Info`,
             children:   <ProfileInfo 
                             profileData={profileData}
+							getProfile={getProfile}
                         ></ProfileInfo>
         },
         {
@@ -34,6 +39,7 @@ export const ProfileContainer = () => {
             label: `Profile Setting`,
             children:   <ProfileSetting
                             profileData={profileData}
+							getProfile={getProfile}
                         ></ProfileSetting>
         },
         {

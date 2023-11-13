@@ -3,33 +3,33 @@ import { toggleShowLoading } from "../redux/actions/common";
 import { deleteMethod, getMethod, postMethod, putMethod } from "./apiService";
 import { buildFilter, timeDelay } from "./common";
 import { message } from "antd";
-import { uploadFile } from "./upload";
+import uploadApi from "./upload";
 
 export const getProducts = async ( params ) =>
 {
 	let filter = buildFilter( params );
-	return await getMethod( 'admin/product/list', filter );
+	return await getMethod( '/admin/product', filter );
 }
 
 export const showProduct = async ( id, params ) =>
 {
-	return await getMethod( `admin/product/show/${ id }`, params );
+	return await getMethod( `/admin/product/show/${ id }`, params );
 }
 
 export const Product = {
 	async create ( data )
 	{
-		return await postMethod( `admin/product/create`, data );
+		return await postMethod( `/admin/product/store`, data );
 	},
 
 	async update ( id, data )
 	{
-		return await putMethod( `admin/product/edit/${ id }`, data );
+		return await putMethod( `/admin/product/update/${ id }`, data );
 	},
 
 	async delete ( id )
 	{
-		return await deleteMethod( `admin/product/delete/${ id }` );
+		return await deleteMethod( `/admin/product/${ id }` );
 	}
 }
 
@@ -39,9 +39,9 @@ export const showProductDetail = async ( productId, setProductData ) =>
 	try
 	{
 		const response = await showProduct( productId );
-		if ( response.status === 'success' )
+		if ( response?.status === 'success' )
 		{
-			setProductData( response.data.product );
+			setProductData( response?.data );
 		} else
 		{
 			setProductData( null );
@@ -60,10 +60,10 @@ export const getProductsByFilter = async ( params, setProducts, setPaging, dispa
 		dispatch( toggleShowLoading( true ) )
 		const response = await getProducts( params );
 		await timeDelay( 2000 );
-		if ( response.status === 'success' )
+		if ( response?.status === 'success' )
 		{
-			setProducts( response.data.products );
-			setPaging( response.data.meta );
+			setProducts( response?.data.products );
+			setPaging( response?.data.meta );
 
 		} else
 		{
@@ -85,43 +85,14 @@ export const submitFormProduct = async ( id = null, files, e, dispatch, history 
 	try
 	{
 		dispatch( toggleShowLoading( true ) );
-		let fileImg = [];
-		let avatar = "";
-		for ( let [ index, item ] of files.entries() )
-		{
-			if ( !item.default )
-			{
-				const rs = await uploadFile( item.originFileObj);
-				if ( rs?.status === 'success' )
-				{
-					if ( index === 0 )
-					{
-						avatar = rs.data.destination;
-					} else
-					{
-						fileImg.push( {
-							name: rs.data.originalname,
-							path: rs.data.destination
-						} );
-					}
-				}
-			} else {
-				if ( index === 0 )
-					{
-						avatar = item.url;
-					} else
-					{
-						fileImg.push( {
-							name: item.name || item.url,
-							path: item.url
-						} );
-					}
-			}
-
-		}
+		let avatar  = await uploadApi.uploadFile(files);
+		let fileImg = await uploadApi.uploadMultiFile(files);
 		await timeDelay( 2000 );
+		// return;
 		let formValue = { ...e };
+		
 		delete formValue.image;
+		console.log(avatar);
 		formValue.avatar = avatar;
 		formValue.products_images = fileImg;
 		formValue.hot = formValue.hot ? 1 : -1;
@@ -136,11 +107,30 @@ export const submitFormProduct = async ( id = null, files, e, dispatch, history 
 		{
 			response = await Product.create( formValue );
 		}
+		if ( response?.status === 'success' )
+		{
+			message.success( `${id && 'Update'|| 'Create'} product successfully!`);
+			history.push( '/product' );
+		} else if ( response?.status === 'fail' && response?.data )
+		{
+			let error = Object.entries( response?.data ) || [];
+			if ( error.length > 0 )
+			{
+				let messageError = error.reduce( ( newMessage, item ) =>
+				{
+					newMessage[ `${ item[ 0 ] }` ] = item[ 1 ][ 0 ];
+					return newMessage
+				}, {} );
+				message.error( messageError )
+			}
+		} else
+		{
+			message.error( response.message || 'Error! Please try again' );
+		}
 		dispatch( toggleShowLoading( false ) );
-		return response;
 	} catch ( error )
 	{
+		message.error( error.message );
 		dispatch( toggleShowLoading( false ) );
-		return error;
 	}
 }

@@ -17,9 +17,9 @@ export const showSlideDetail = async ( productId, setSlide ) =>
 	try
 	{
 		const response = await showSlide( productId );
-		if ( response.status == 'success' )
+		if ( response?.status == 'success' )
 		{
-			setSlide( response.data );
+			setSlide( response?.data );
 		} else {
 			setSlide( null );
 		}
@@ -35,9 +35,9 @@ export const getSlidesByFilters = async ( params, setSlides ) =>
 	try
 	{
 		const response = await getSlides( params );
-		if ( response.status == 'success' )
+		if ( response?.status == 'success' )
 		{
-			setSlides( response.data.slides );
+			setSlides( response?.data.slides );
 		} else
 		{
 			setSlides( null );

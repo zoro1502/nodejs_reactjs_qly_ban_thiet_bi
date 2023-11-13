@@ -38,6 +38,10 @@ const Register = (props) => {
     }))
   }
 
+  const { from } = props.location.state || { from: { pathname: '/template' } }
+
+  
+
   return (
     <div className="auth-page">
       <Container className="col-12">
@@ -48,11 +52,8 @@ const Register = (props) => {
                 <p className="auth-header mb-0">Sign Up</p>
                 <div className="logo-block">
                   <SofiaLogo />
-                  <p className="mb-0">SOFIA</p>
+                  <p className="mb-0">Drug Store CMS</p>
                 </div>
-              </div>
-              <div className="auth-info my-2">
-                <p>This is a real app with Node.js backend - use <b>"admin@flatlogic.com / password"</b> to login!</p>
               </div>
               <form onSubmit={(event => doRegister(event))}>
                 <FormGroup className="my-3">

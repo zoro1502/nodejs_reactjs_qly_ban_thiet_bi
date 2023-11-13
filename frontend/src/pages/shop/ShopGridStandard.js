@@ -12,6 +12,7 @@ import ShopProducts from '../../wrappers/product/ShopProducts';
 import * as queryString from 'query-string';
 import { getCategories, getCategoryList, getProducts } from "../../services/index";
 import { toggleShowLoading } from "../../redux/actions/common";
+import { Pagination } from "antd";
 
 const ShopGridStandard = ( { location, dispatch } ) =>
 {
@@ -20,10 +21,10 @@ const ShopGridStandard = ( { location, dispatch } ) =>
 	const [ currentPage, setCurrentPage ] = useState( 1 );
 	const [ products, setProducts ] = useState( [] );
 	const [ categories, setCategories ] = useState( [] );
-	const [params, setParams] = useState({
+	const [ params, setParams ] = useState( {
 		name: null,
 		category_id: null
-	});
+	} );
 	const [ paging, setPaging ] = useState( { page: 1, page_size: 20, total: 0 } );
 
 	const { pathname } = location;
@@ -36,41 +37,43 @@ const ShopGridStandard = ( { location, dispatch } ) =>
 
 	const getProductList = async ( filter ) =>
 	{
-		dispatch(toggleShowLoading(true));
+		dispatch( toggleShowLoading( true ) );
 		try
 		{
 			const response = await getProducts( filter );
-			if ( response.status === 'success' )
+			if ( response?.status === 'success' )
 			{
-				setProducts( response.data.products );
-				setPaging( { ...response.data.meta } );
+				setProducts( response?.data?.products );
+				setPaging( { ...response?.data?.meta } );
 			}
 		} catch ( error )
 		{
 			console.log( error );
 		}
-		dispatch(toggleShowLoading(false));
+		dispatch( toggleShowLoading( false ) );
 	}
 
-	
+
 
 	useEffect( () =>
 	{
 		getCategories( null, setCategories );
-		if(window.location.search) {
-			let cateId = window.location.search.replace('?category_id=', '');
-			if(cateId.match(/^[0-9]+$/)) {
-				setParams({...params, category_id: Number(cateId)})
+		if ( window.location.search )
+		{
+			let cateId = window.location.search.replace( '?category_id=', '' );
+			if ( cateId.match( /^[0-9]+$/ ) )
+			{
+				setParams( { ...params, category_id: Number( cateId ) } )
 			}
 		}
 	}, [] );
 
 	useEffect( () =>
 	{
-		
+
 		paging.page = currentPage;
 		// console.log(queryString());
-		getProductList( { ...paging, ...params} );
+		getProductList( { ...paging, ...params } );
 	}, [ currentPage, params.name, params.category_id ] );
 
 
@@ -81,8 +84,8 @@ const ShopGridStandard = ( { location, dispatch } ) =>
                 <meta name="description" content="Shop page of flone react minimalist eCommerce template." />
             </MetaTags> */}
 
-			<BreadcrumbsItem to={'/' }>Home</BreadcrumbsItem>
-			<BreadcrumbsItem to={pathname}>Shop</BreadcrumbsItem>
+			<BreadcrumbsItem to={ '/' }>Home</BreadcrumbsItem>
+			<BreadcrumbsItem to={ pathname }>Shop</BreadcrumbsItem>
 
 			<LayoutOne headerTop="visible">
 				{/* breadcrumb */ }
@@ -95,8 +98,8 @@ const ShopGridStandard = ( { location, dispatch } ) =>
 								{/* shop sidebar */ }
 								<ShopSidebar
 									categories={ categories }
-									params={params}
-									setParams={setParams}
+									params={ params }
+									setParams={ setParams }
 									sideSpaceClass="mr-30" />
 							</div>
 							<div className="col-lg-9 order-1 order-lg-2">
@@ -108,17 +111,15 @@ const ShopGridStandard = ( { location, dispatch } ) =>
 
 								{/* shop product pagination */ }
 								{
-									paging.total > 0 && <div className="pro-pagination-style text-center mt-30">
-										<Paginator
-											totalRecords={ paging.total }
-											pageLimit={ paging.page_size }
-											pageNeighbours={ 2 }
-											setOffset={ setOffset }
-											currentPage={ paging.page }
-											setCurrentPage={ setCurrentPage }
-											pageContainerClass="mb-0 mt-0"
-											pagePrevText="«"
-											pageNextText="»"
+									paging.total > 0 &&
+									<div className="mx-auto d-flex justify-content-center my-4">
+										<Pagination
+											onChange={ e =>
+												getProductList( { ...paging, page: e, ...params } )
+											}
+											pageSize={ paging.page_size }
+											defaultCurrent={ paging.page }
+											total={ paging.total }
 										/>
 									</div>
 								}

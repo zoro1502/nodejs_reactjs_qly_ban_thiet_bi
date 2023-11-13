@@ -1,12 +1,14 @@
 import PropTypes from "prop-types";
 import React from "react";
+import { buildImage } from "../../services";
+import { checkTimeNow } from "../../helpers/func";
 
 const ProductImageFixed = ({ product }) => {
   return (
     <div className="product-large-image-wrapper">
       {product.sale || product.hot === 1 ? (
         <div className="product-img-badges">
-          {product.sale ? (
+          {product.sale && checkTimeNow(product?.sale_to) ? (
             <span className="pink">-{product.sale}%</span>
           ) : (
             ""
@@ -18,9 +20,9 @@ const ProductImageFixed = ({ product }) => {
       )}
 
       <div className="product-fixed-image">
-        {product.avatar ? (
+        {buildImage(product.avatar) ? (
           <img
-            src={product.avatar}
+            src={buildImage(product.avatar)}
             alt=""
             className="img-fluid"
           />

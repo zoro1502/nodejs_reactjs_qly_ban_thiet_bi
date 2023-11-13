@@ -8,7 +8,7 @@ export const setCurrency = (currencyName) => {
         `http://api.exchangeratesapi.io/v1/latest?access_key=523380ab42abd25f9ebdc193dd3b19e7&symbols=USD,GBP,EUR,VND`
       )
       .then((response) => {
-        const rates = response.data.rates;
+        const rates = response?.data.rates;
         let currencyRate = 0;
         for (const rate in rates) {
           if (rate === currencyName) {

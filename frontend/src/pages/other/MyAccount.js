@@ -10,7 +10,7 @@ import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import { useForm } from "antd/es/form/Form";
 import { Auth_Service } from "../../services/shop/auth-service";
 import { Form, Input, Select, Upload, message } from "antd";
-import { onFieldsChange, uploadFile, validateMessages } from "../../services";
+import { buildImage, onFieldsChange, setItem, uploadFile, validateMessages } from "../../services";
 import { PlusOutlined } from '@ant-design/icons';
 import { useDispatch } from "react-redux";
 import { toggleShowLoading } from "../../redux/actions/common";
@@ -57,26 +57,26 @@ const MyAccount = ( { location } ) =>
 		dispatch( toggleShowLoading( true ) );
 		const response = await Auth_Service.profile();
 
-		if ( response.status == 'success' )
+		if ( response?.status == 'success' )
 		{
 			let file = [];
 			file.push( {
 				uid: file.length,
-				name: response.data.avatar,
+				name: response?.data.avatar,
 				status: 'done',
-				url: response.data?.avatar || DEFAULT_IMG,
+				url: buildImage(response?.data?.avatar, true),
 				default: true
 			} );
 			form.setFieldsValue( {
-				name: response.data.name,
-				email: response.data.email,
-				phone: response.data.phone,
-				gender: response.data.gender,
-				birthDay: response.data.birthDay,
+				name: response?.data?.name,
+				email: response?.data?.email,
+				phone: response?.data?.phone,
+				gender: response?.data?.gender,
+				birthDay: response?.data?.birthDay,
 				image: file,
 			} );
 			setFiles( file );
-			setUser( response.data )
+			setUser( response?.data )
 
 		} else
 		{
@@ -88,25 +88,28 @@ const MyAccount = ( { location } ) =>
 	const submitForm = async ( e ) =>
 	{
 		let avatar = user.avatar;
-		console.log(files);
 		if ( !files[ 0 ].default )
 		{
-			const rs = await uploadFile( files[ 0 ] );
-			if ( rs?.status === 'success' )
-			{
-				avatar = rs.data.destination;
-			}
+			avatar = await uploadFile( files[ 0 ] );
 		}
 		let formData = {...e, avatar: avatar};
 		delete formData.image;
+		dispatch( toggleShowLoading( true ) );
 		const response = await Auth_Service.updateProfile( formData );
-		if ( response.status == 'success' )
+		if ( response?.status == 'success' )
 		{
 			message.success( 'Update profile successfully!' );
+			setItem('name',formData.name);
+			setItem('email', formData.email);
+			setItem('phone', formData.phone);
+			setItem('gender', formData.gender);
+			setItem('avatar', formData.avatar);
+			
 		} else
 		{
-			message.error( response.message || 'error' );
+			message.error( response?.message || 'Error update profile' );
 		}
+		dispatch( toggleShowLoading( false ) );
 	}
 
 	const checkPassword = ( newPass, retypePass ) =>
@@ -119,8 +122,8 @@ const MyAccount = ( { location } ) =>
 		dispatch(toggleShowLoading(true));
 		if ( checkPassword( e.password, e.retypeNewPassword ) )
 		{
-			const response = await Auth_Service.updateProfile( { password: e.password } );
-			if ( response.status == 'success' )
+			const response = await Auth_Service.changePassword( { password: e.password } );
+			if ( response?.status == 'success' )
 			{
 				message.success( 'Change password successfully!' );
 			} else
@@ -149,7 +152,7 @@ const MyAccount = ( { location } ) =>
 	return (
 		<Fragment>
 			<MetaTags>
-				<title>Cake Shop | My Account</title>
+				<title>Drug store | My Account</title>
 				<meta
 					name="description"
 					content="Compare page of flone react minimalist eCommerce template."

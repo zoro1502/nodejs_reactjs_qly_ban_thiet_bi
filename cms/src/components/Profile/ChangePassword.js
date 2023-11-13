@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Form, Input, Select, Switch, Tabs, Upload, message } from 'antd';
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -37,7 +36,7 @@ export const ChangePassword = (props) => {
     const submitForm = async (e) => {
         if (checkPassword(e.password, e.retypeNewPassword)) {
             const response = await AUTH_SERVICE.update({ password: e.password });
-            if (response.status == 'success') {
+            if (response?.status == 'success') {
                 message.success('Change password successfully!');
             } else {
                 message.error(response.message || 'error');

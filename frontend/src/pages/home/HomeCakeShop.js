@@ -36,16 +36,16 @@ const HomeCakeShop = () => {
   return (
     <Fragment>
       <MetaTags>
-        <title>Cake shop | Home</title>
+        <title>Home</title>
         <meta
           name="description"
-          content="Cake shop home of flone react minimalist eCommerce template."
+          content="Drug store home of flone react minimalist eCommerce template."
         />
       </MetaTags>
       <LayoutOne headerTop="visible">
         {/* hero slider */}
 		{slides && <HeroSliderTwentyTwo slides={slides}/>}
-        
+
         {/* banner */}
         {/* <BannerNineteen spaceTopClass="pt-100" spaceBottomClass="pb-80" /> */}
         {/* feature icon */}

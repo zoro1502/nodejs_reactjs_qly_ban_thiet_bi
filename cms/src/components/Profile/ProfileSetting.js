@@ -3,11 +3,11 @@ import { Form, Input, Select, Switch, Tabs, Upload, message } from 'antd';
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import React from 'react';
-import { DEFAULT_IMG } from '../../helpers/constant/image';
 import { useForm } from 'antd/lib/form/Form';
 import { PlusOutlined } from '@ant-design/icons';
 import { AUTH_SERVICE } from '../../services/authService';
-import { uploadFile } from '../../services/upload';
+import uploadApi from '../../services/upload';
+import { buildImage, setItem } from '../../services/common';
 
 export const ProfileSetting = (props) => {
     const [form] = useForm();
@@ -17,7 +17,7 @@ export const ProfileSetting = (props) => {
     useEffect(async () => {
         form.setFieldsValue({
             name: props.profileData.name,
-            username: props.profileData.username,
+            // username: props.profileData.username,
             email: props.profileData.email,
             address: props.profileData.address,
             gender: props.profileData.gender,
@@ -35,12 +35,12 @@ export const ProfileSetting = (props) => {
                 uid: file.length,
                 name: props.profileData.avatar,
                 status: 'done',
-                url: props.profileData.avatar || DEFAULT_IMG,
+                url: buildImage(props.profileData.avatar),
                 default: true
             });
             let formValue = {
                 name: data.name,
-                username: data.username,
+                // username: data.username,
                 email: data.email,
                 address: data.address,
                 gender: data.gender,
@@ -65,24 +65,29 @@ export const ProfileSetting = (props) => {
     };
 
     const submitForm = async (e) => {
-        let avatar = props.profileData.avatar;
+        let avatar = null;
 
         if (!files[0].default) {
-            const rs = await uploadFile(files[0]);
-            console.log(rs)
-            if (rs?.status == 'success') {
-                avatar = 'http://api-banhngot.topcode.fun/api/v1/upload/' + rs.data.filename;
-            }
+            avatar = await uploadApi.uploadFile(files);
         }
 
-        let formData = { ...e, avatar: avatar };
+        let formData = { ...e };
         delete formData.image;
-
+		if(avatar) {
+			formData.avatar = avatar;
+		}
         const response = await AUTH_SERVICE.update(formData);
-        if (response.status == 'success') {
+        if (response?.status == 'success') {
             message.success('Update profile successfully!');
+			if(avatar) {
+				setItem('avatar', avatar);
+				
+			}
+			setItem('name', formData.name);
+			setItem('phone', formData.phone);
+			props.getProfile();
         } else {
-            message.error(response.message || 'error');
+            message.error(response?.message || 'error');
         }
     }
 
@@ -103,8 +108,7 @@ export const ProfileSetting = (props) => {
 
     const normFile = (e) => {
         if (e?.fileList) {
-            let fileChoose = e?.fileList.map(item => item.originFileObj);
-            setFiles(fileChoose);
+            setFiles( e?.fileList);
         }
         return e?.fileList;
     }
@@ -136,12 +140,12 @@ export const ProfileSetting = (props) => {
                                     </Form.Item>
                                 </div>
 
-                                <div className='col-md-6'>
+                                {/* <div className='col-md-6'>
                                     <Form.Item name="username" label="User name"
                                         className=' d-block' rules={[{ required: true }]}>
                                         <Input className='form-control' placeholder='Enter username' />
                                     </Form.Item>
-                                </div>
+                                </div> */}
 
                             </div>
 

@@ -14,17 +14,36 @@ import Breadcrumbs from "../Breadbrumbs/Breadcrumbs";
 import s from "./Layout.module.scss";
 import { ROUTERS } from "../../router";
 import IconsPage from "../../pages/uielements/icons/IconsPage";
-import ForbiddenPage from "../../pages/error/403";
+import { useEffect } from "react";
+import { getItem } from "../../services/common";
+import { useState } from "react";
 
 const Layout = ( props ) =>
 {
+	const [ accessToken, setAccessToken ] = useState( localStorage.getItem( 'access_token_cms' ) || null );
+
+	useEffect(() => {
+		if ( !accessToken )
+		{
+			localStorage.clear();
+			console.log(1);
+			window.location.href = '/login';
+		}
+	}, [])
+	// useEffect(() => {
+	// 	if(!getItem('access_token_cms')) {
+	// 		localStorage.clear();
+	// 		window.location.href = '/login';
+	// 		console.log(1);
+	// 	}
+	// }, [getItem('access_token_cms')])
 	return (
 		<div className={ s.root }>
 			<div className={ s.wrap }>
 				<Header />
 				<Sidebar />
 				<main className={ s.content }>
-					{props.location.pathname !== '/403' && <Breadcrumbs url={ props.location.pathname } />}
+					<Breadcrumbs url={ props.location.pathname } />
 					<Switch>
 						{
 
@@ -43,7 +62,6 @@ const Layout = ( props ) =>
 						}
 						<Route path="/product" exact render={ () => <Redirect to="/product/list" /> } />
 						<Route path="/template/ui-elements/icons" component={IconsPage}/>
-						<Route path="/403" exact component={ForbiddenPage}/>
 					</Switch>
 				</main>
 			</div>

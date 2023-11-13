@@ -17,11 +17,13 @@ export const LoginForm = ( props ) =>
 		dispatch(toggleShowLoading(true));
 		const response = await Auth_Service.login(e);
 		if (response?.status == 'success') {
-			localStorage.setItem('access_token', response?.data?.token_info?.access_token);
+			localStorage.setItem('access_token', response?.data?.token_info?.accessToken);
 			localStorage.setItem('name', response?.data?.user?.name);
 			localStorage.setItem('email', response?.data?.user?.email);
+			localStorage.setItem('phone', response?.data?.user?.phone);
 			localStorage.setItem('gender', response?.data?.user?.gender);
 			localStorage.setItem('avatar', response?.data?.user?.avatar);
+			localStorage.setItem('id', response?.data?.user?.id);
 			window.location.href = '/';
 		} else {
 			message.error(response?.message || 'error');
@@ -42,10 +44,10 @@ export const LoginForm = ( props ) =>
 						validateMessages={ validateMessages }
 					>
 						<div className='mb-3'>
-							<Form.Item name="username"
+							<Form.Item name="email"
 								rules={ [ { required: true } ] }
 								className=' d-block'>
-								<Input className='mb-0' placeholder='Enter user name/email' />
+								<Input className='mb-0' placeholder='Enter email' />
 							</Form.Item>
 						</div>
 						<div className="mt-5 mb-3">

@@ -71,13 +71,13 @@ const IconGroup = ( {
 						{ token &&
 							<>
 								<li>
-									<Link to={ "/my-order" }>
-										my order
+									<Link to={ "/my-account" }>
+										My account
 									</Link>
 								</li>
 								<li>
-									<Link to={ "/my-account" }>
-										my account
+									<Link to={ "/my-order" }>
+										My order
 									</Link>
 								</li>
 								<li>
@@ -88,6 +88,8 @@ const IconGroup = ( {
 										localStorage.removeItem('email');
 										localStorage.removeItem('avatar');
 										localStorage.removeItem('gender');
+										localStorage.removeItem('phone');
+										localStorage.removeItem('id');
 										setActiveAccount( false );
 										window.location.href = '/';
 									} }>Logout</a>

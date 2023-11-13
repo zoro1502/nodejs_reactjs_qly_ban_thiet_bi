@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React, { Fragment, useEffect, useState } from "react";
 import { LightgalleryProvider, LightgalleryItem } from "react-lightgallery";
 import Swiper from "react-id-swiper";
+import { checkTimeNow } from "../../helpers/func";
 
 const ProductImageGalleryLeftThumb = ({ product, thumbPosition }) => {
   const [gallerySwiper, getGallerySwiper] = useState(null);
@@ -76,7 +77,7 @@ const ProductImageGalleryLeftThumb = ({ product, thumbPosition }) => {
           <div className="product-large-image-wrapper">
             {product.sale || product.hot === 1 ? (
               <div className="product-img-badges">
-                {product.sale ? (
+                {product.sale && checkTimeNow(product?.sale_to) ? (
                   <span className="pink">-{product.sale}%</span>
                 ) : (
                   ""
@@ -88,8 +89,8 @@ const ProductImageGalleryLeftThumb = ({ product, thumbPosition }) => {
             )}
             <LightgalleryProvider>
               <Swiper {...gallerySwiperParams}>
-                {product.product_images &&
-                  product.product_images.map((single, key) => {
+                {product.products_images &&
+                  product.products_images.map((single, key) => {
                     return (
                       <div key={key}>
                         <LightgalleryItem
@@ -123,8 +124,8 @@ const ProductImageGalleryLeftThumb = ({ product, thumbPosition }) => {
         >
           <div className="product-small-image-wrapper product-small-image-wrapper--side-thumb">
             <Swiper {...thumbnailSwiperParams}>
-              {product.product_images &&
-                product.product_images.map((single, key) => {
+              {product.products_images &&
+                product.products_images.map((single, key) => {
                   return (
                     <div key={key}>
                       <div className="single-image">

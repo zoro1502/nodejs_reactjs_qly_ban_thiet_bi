@@ -40,7 +40,7 @@ export const PermissionSearch = ( props ) =>
 						<Input className='form-control' placeholder='Enter name' />
 					</Form.Item>
 				</div>
-				<div className="col-md-3 mb-2">
+				{/* <div className="col-md-3 mb-2">
 					<Form.Item name="group" label="Group" className='mb-0 d-block'>
 						<Select
 							placeholder="Select group"
@@ -48,7 +48,7 @@ export const PermissionSearch = ( props ) =>
 							options={ props.group}
 						/>
 					</Form.Item>
-				</div>
+				</div> */}
 			</div>
 
 			<button type="submit" className="btn btn-primary" style={ { marginRight: 10, padding: '10px 10px' } }>

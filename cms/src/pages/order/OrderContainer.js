@@ -20,8 +20,8 @@ export const OrderContainer = () =>
 		getOrdersByFilters(paging, setOrders, setPaging);
 	}, []);
 
-	const getOrdersByFilters = (filter) => {
-		getOrdersByFilter(filter, setOrders, setPaging, dispatch);
+	const getOrdersByFilters = async (filter) => {
+		await getOrdersByFilter(filter, setOrders, setPaging, dispatch);
 	}
 
     return  <Orders 

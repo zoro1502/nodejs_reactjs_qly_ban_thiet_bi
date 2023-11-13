@@ -29,7 +29,7 @@ export const Permissions = ( props ) =>
 	useEffect( () =>
 	{
 		getListData( { ...paging, ...params } );
-		getConfigGroup();
+		// getConfigGroup();
 	}, [] );
 
 	const getListData = async ( filter ) =>
@@ -42,7 +42,11 @@ export const Permissions = ( props ) =>
 			setPaging( response.meta );
 		} else
 		{
-			setListData( [] )
+			setListData( [] );
+			setPaging({
+				page: 1,
+				page_size: 20
+			})
 		}
 		dispatch(toggleShowLoading(false));
 	}

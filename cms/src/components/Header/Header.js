@@ -25,13 +25,14 @@ import s from "./Header.module.scss";
 import "animate.css";
 import { DEFAULT_USER } from "../../helpers/constant/image";
 import { LogoutOutlined } from "@ant-design/icons";
+import { buildImage, getItem, onErrorUser } from "../../services/common";
 
 const Header = ( props ) =>
 {
 	const [ menuOpen, setMenuOpen ] = useState( false );
 	const [ notificationsOpen, setNotificationsOpen ] = useState( false );
 
-	const userImage = localStorage.getItem( 'avatar' ) || DEFAULT_USER;
+	const userImage = getItem( 'avatar' ) && JSON.parse(getItem( 'avatar' )) || null;
 
 	const toggleNotifications = () =>
 	{
@@ -114,13 +115,10 @@ const Header = ( props ) =>
 				</Dropdown> */}
 				<Dropdown isOpen={ notificationsOpen } toggle={ () => toggleNotifications() } nav id="basic-nav-dropdown" className="ml-3">
 					<DropdownToggle nav caret className="navbar-dropdown-toggle">
-						<span className={ `${ s.avatar } rounded-circle float-left mr-2` }>
-							<img src={ userImage } alt="User" onError={ ( e ) =>
-							{
-								e.currentTarget.src = DEFAULT_USER
-							} } />
+						<span style={{border: '1px solid'}} className={ `${ s.avatar } rounded-circle float-left mr-2` }>
+							<img src={ buildImage(userImage) } alt="User" onError={ onErrorUser} />
 						</span>
-						<span className="small d-none d-sm-block ml-1 mr-2 body-1">{ localStorage.getItem( 'email' ) || 'N/A' }</span>
+						<span className="small d-none d-sm-block ml-1 mr-2 body-1">{ localStorage.getItem( 'email' ) || getItem("full_name") }</span>
 					</DropdownToggle>
 					<DropdownMenu className="navbar-dropdown profile-dropdown" style={ { width: "194px" } }>
 						<NavLink href="/profile">

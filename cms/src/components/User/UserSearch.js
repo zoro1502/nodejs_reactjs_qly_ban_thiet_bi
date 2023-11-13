@@ -15,12 +15,12 @@ export const UserSearch = ( props ) =>
 	{
 		setStatus( [
 			{ value: 1, label: "Active" },
-			{ value: -1, label: "Inactive" }
+			{ value: 0, label: "Inactive" }
 		] );
 
 		setType( [
-			{ value: 1, label: "ADM" },
-			{ value: 2, label: "Pub" }
+			{ value: "ADMIN", label: "ADM" },
+			{ value: "USER", label: "CUSTOMER" }
 		] );
 	}, [] )
 
@@ -35,13 +35,13 @@ export const UserSearch = ( props ) =>
 		{
 			value.id = value.id.trim();
 		}
-		props.getListData( { ...props.paging, page: 1, ...value } );
+		props.getListData( { page: 1, page_size: props?.paging?.page_size, ...value } );
 		props.setParams( value );
 	}
 
 	const resetForm = () =>
 	{
-		props.getListData( { ...props.paging, page: 1 } );
+		props.getListData( { page: 1, page_size: props?.paging?.page_size } );
 		props.setParams( {
 			id: null,
 			name: null,
@@ -58,6 +58,11 @@ export const UserSearch = ( props ) =>
 			onFinish={ submitForm }
 		>
 			<div className="row mb-1">
+				<div className="col-md-3 mb-2 form-group">
+					<Form.Item name="id" label="id" className='mb-0 d-block'>
+						<Input className='form-control' placeholder='Enter Id' />
+					</Form.Item>
+				</div>
 				<div className="col-md-3 mb-2 form-group">
 					<Form.Item name="name" label="name" className='mb-0 d-block'>
 						<Input className='form-control' placeholder='Enter name' />

@@ -1,16 +1,16 @@
 // @ts-nocheck
-import { Form, Input, Select, Switch, Upload, message } from 'antd';
+import { Form, Input, Select, Switch, Upload } from 'antd';
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import React from 'react';
 import Widget from '../Widget/Widget';
-import { DEFAULT_IMG } from '../../helpers/constant/image';
+import { DEFAUT_IMG } from '../../helpers/constant/image';
 import { useForm } from 'antd/lib/form/Form';
 import { toSlug } from '../../helpers/common/common';
 import { PlusOutlined } from '@ant-design/icons';
 import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import { showCategoryDetail, submitForms } from '../../services/categoryService';
-import { RESPONSE_API } from '../../services/common';
+import { buildImage } from '../../services/common';
 export const CategoryForm = ( props ) =>
 {
 	const [ form ] = useForm();
@@ -26,7 +26,7 @@ export const CategoryForm = ( props ) =>
 	{
 		setStatus( [
 			{ value: 1, label: "Active" },
-			{ value: -1, label: "Inactive" }
+			{ value: 0, label: "Inactive" }
 		] );
 	}, [] );
 
@@ -49,18 +49,18 @@ export const CategoryForm = ( props ) =>
 				uid: file.length,
 				name: data.avatar,
 				status: 'done',
-				url: data.avatar || DEFAULT_IMG,
+				url: buildImage(data.avatar),
 				default: true
 			} );
 			let formValue = {
 				name: data.name,
 				description: data.description,
-				status: data.status,
+				status: data.status || 0,
 				hot: data.hot === 1 ? true : false,
 				slug: data.slug,
 				image: file
 			}
-			setFiles(file);
+			setFiles(file)
 			form.setFieldsValue( formValue )
 
 		}
@@ -84,8 +84,7 @@ export const CategoryForm = ( props ) =>
 
 	const submitForm = async ( e ) =>
 	{
-		const response = await submitForms( id, files, e, dispatch, history );
-		await RESPONSE_API(response, message, id, history, 'category');
+		await submitForms( id, files, e, dispatch, history );
 	}
 
 	const resetForm = () =>
@@ -114,7 +113,7 @@ export const CategoryForm = ( props ) =>
 	{
 		if ( e?.fileList )
 		{
-			let fileChoose = e?.fileList.map( item => item.originFileObj );
+			let fileChoose = e?.fileList;
 			setFiles( fileChoose );
 		}
 		return e?.fileList;
@@ -175,9 +174,9 @@ export const CategoryForm = ( props ) =>
 							/>
 						</Form.Item>
 
-						<Form.Item name="hot" label="Is hot?" valuePropName="checked">
+						{/* <Form.Item name="hot" label="Is hot?" valuePropName="checked">
 							<Switch />
-						</Form.Item>
+						</Form.Item> */}
 
 					</div>
 

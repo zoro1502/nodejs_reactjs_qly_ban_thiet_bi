@@ -1,10 +1,13 @@
 import defaultUser from '../assets/img/default-avatar.png';
+import emptyImg from '../assets/img/logo-empty.png';
 import defaultImg from '../assets/img/image_faildoad.png';
 import errorImg from '../assets/img/cancel.png';
 import success from '../assets/img/success.png';
 
-export const DEFAULT_USER = defaultUser;
-export const DEFAULT_IMG = defaultImg;
+export const DEFAULT_IMG = defaultUser;
+export const EMPTY_IMG = emptyImg;
+export const DEFAULT_IMAGE = defaultImg;
+
 export const ERROR_PAYMENT = errorImg;
 export const SUCCESS_PAYMENT = success;
 export const WEB_VALUE = {

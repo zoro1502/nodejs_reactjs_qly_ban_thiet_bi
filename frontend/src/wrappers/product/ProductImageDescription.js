@@ -8,6 +8,7 @@ import ProductImageGallery from "../../components/product/ProductImageGallery";
 import ProductDescriptionInfo from "../../components/product/ProductDescriptionInfo";
 import ProductImageGallerySideThumb from "../../components/product/ProductImageGallerySideThumb";
 import ProductImageFixed from "../../components/product/ProductImageFixed";
+import { checkTimeNow } from "../../helpers/func";
 
 const ProductImageDescription = ( {
 	spaceTopClass,
@@ -31,7 +32,7 @@ const ProductImageDescription = ( {
 	const { addToast } = useToasts();
 
 
-	const discountedPrice = getDiscountPrice( product.price, product.sale ) || 0;
+	const discountedPrice = checkTimeNow(product?.sale_to) ? getDiscountPrice( product.price, product.sale ) : 0;
 	const finalProductPrice = +( product.price * currency.currencyRate ).toFixed( 2 );
 	const finalDiscountedPrice = +(discountedPrice * currency.currencyRate).toFixed( 2 );
 
@@ -43,15 +44,17 @@ const ProductImageDescription = ( {
 		{
 			img.push( product.avatar );
 		}
-		if ( product.product_images )
+		if ( product?.products_images )
 		{
-			product.product_images.reduce( ( arr, e ) =>
+			img = product.products_images.reduce( ( arr, e ) =>
 			{
 				arr.push( e.path );
 				return arr
 			}, img );
+			console.log(img);
 		}
 		setImages( img );
+		
 	}, [] );
 
 	return (

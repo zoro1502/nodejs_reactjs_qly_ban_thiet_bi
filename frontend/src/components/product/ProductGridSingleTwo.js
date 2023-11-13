@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import { getDiscountPrice } from "../../helpers/product";
 import ProductModal from "./ProductModal";
-import { customNumber } from "../../helpers/func";
+import { checkTimeNow, customNumber } from "../../helpers/func";
+import { buildImage } from "../../services";
+import { StarIcons } from "../common/star";
 
 const ProductGridSingleTwo = ( {
 	product,
@@ -30,6 +32,12 @@ const ProductGridSingleTwo = ( {
 		discountedPrice * currency.currencyRate
 	).toFixed( 2 );
 
+	let vote_number = 0;
+	if ( product?.total_stars && product?.total_reviews )
+	{
+		vote_number = Number( Math.round( product?.total_stars / product?.total_reviews ) );
+	}
+
 	return (
 		<Fragment>
 			<div
@@ -44,7 +52,8 @@ const ProductGridSingleTwo = ( {
 						<Link to={ process.env.PUBLIC_URL + "/product/" + product.id }>
 							<img
 								className="default-img"
-								src={ product.avatar }
+								style={ { width: "100%", height: "270px", objectFit: "cover" } }
+								src={ buildImage( product.avatar ) }
 								alt=""
 							/>
 							{/* {product.image.length > 1 ? (
@@ -59,7 +68,7 @@ const ProductGridSingleTwo = ( {
 						</Link>
 						{ product.sale || product.hot === 1 ? (
 							<div className="product-img-badges">
-								{ product.sale ? (
+								{ product.sale && checkTimeNow(product?.sale_to) ? (
 									<span className="pink">-{ product.sale }%</span>
 								) : (
 									""
@@ -121,6 +130,9 @@ const ProductGridSingleTwo = ( {
 									{ product.name }
 								</Link>
 							</h3>
+							<div className="my-2">
+								<StarIcons vote_number={vote_number} is_form={false}></StarIcons>
+							</div>
 							<div className="price-2">
 								{ discountedPrice !== null ? (
 									<Fragment>

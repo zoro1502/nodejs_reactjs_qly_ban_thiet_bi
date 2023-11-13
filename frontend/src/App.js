@@ -108,13 +108,17 @@ const App = ( props ) =>
 									component={ About }
 								/>
 								<Route
+									path={ process.env.PUBLIC_URL + "/my-order" }
+									component={ MyOrder }
+								/>
+								<Route
 									path={ process.env.PUBLIC_URL + "/payment/:type" }
 									component={ PaymentStatus }
 								/>
-								{/* <Route
-                  path={process.env.PUBLIC_URL + "/contact"}
-                  component={Contact}
-                /> */}
+								<Route
+									path={ process.env.PUBLIC_URL + "/payment" }
+									component={ PaymentStatus }
+								/>
 								<Route
 									path={ process.env.PUBLIC_URL + "/my-account" }
 									component={ MyAccount }
@@ -124,7 +128,7 @@ const App = ( props ) =>
 									component={ LoginRegister }
 								/>
 
-								<Redirect from="/auth" to="auth/login"/>
+								<Redirect from="/auth" to="auth/login" />
 
 								<Route
 									path={ process.env.PUBLIC_URL + "/cart" }
@@ -141,10 +145,6 @@ const App = ( props ) =>
 								<Route
 									path={ process.env.PUBLIC_URL + "/checkout" }
 									component={ Checkout }
-								/>
-								<Route
-									path={ process.env.PUBLIC_URL + "/my-order" }
-									component={ MyOrder }
 								/>
 
 								<Route

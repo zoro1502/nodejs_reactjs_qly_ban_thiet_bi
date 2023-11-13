@@ -17,7 +17,6 @@ import { logoutUser } from "../src/redux/actions/auth";
 // -- Third Party Libs
 
 // -- Services
-import isAuthenticated from "./services/authService";
 
 // -- Component Styles
 import "./styles/app.scss";
@@ -25,35 +24,28 @@ import 'antd/dist/antd.css'
 import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 import Layout from "./components/Layout/Layout";
 import Loading from "./components/Layout/Loading";
+import { useEffect } from "react";
+import { getItem } from "./services/common";
 
-// const PrivateRoute = ( { dispatch, component, ...rest } ) =>
-// {
-// 	if ( !isAuthenticated( JSON.parse( localStorage.getItem( "authenticated" ) ) ) )
-// 	{
-// 		dispatch( logoutUser() );
-// 		return ( <Redirect to="/login" /> )
-// 	} else
-// 	{
-// 		return (
-// 			<Route { ...rest } render={ props => ( React.createElement( component, props ) ) } />
-// 		);
-// 	}
-// };
 
 const App = ( props ) =>
 {
+	
 	return (
 		<BrowserRouter>
 			<Loading />
 			<Switch>
 				<Route path="/login" exact component={ Login } />
 				<Route path="/error" exact component={ ErrorPage } />
-				{/* <Route path="/register" exact component={ Register } /> */}
+				<Route path="/register" exact component={ Register } />
 				<Route path="/" exact render={ () => <Redirect to="/dashboard" /> } />
 				<Route path="/product" exact render={ () => <Redirect to="/product/list" /> } />
 				<Route path="/user" exact render={ () => <Redirect to="/user/list" /> } />
 				<Route path="/category" exact render={ () => <Redirect to="/category/list" /> } />
 				<Route path="/order" exact render={ () => <Redirect to="/order/list" /> } />
+				<Route path="/setting" exact render={ () => <Redirect to="/setting/role/list" /> } />
+				<Route path="/setting/role" exact render={ () => <Redirect to="/setting/role/list" /> } />
+				<Route path="/setting/permission" exact render={ () => <Redirect to="/setting/permission/list" /> } />
 				<Route path="/" render={ ( props ) => <Layout { ...props } /> } />
 				<Route path='**' exact={ true } component={ ErrorPage } />
 			</Switch>

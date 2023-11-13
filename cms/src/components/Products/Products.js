@@ -11,13 +11,13 @@ import { customDate, customNumber } from "../../helpers/common/common.js";
 import { ProductSearch } from "./ProductSearch.js";
 import { Pagination } from "antd";
 import { Link } from "react-router-dom/cjs/react-router-dom.min.js";
-import { DEFAULT_IMG, EMPTY_IMG } from "../../helpers/constant/image.js";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DEFAUT_IMG, EMPTY_IMG } from "../../helpers/constant/image.js";
+import { buildImage, onErrorImage } from "../../services/common.js";
 export const Products = ( props ) =>
 {
 	const errorImg = ( e ) =>
 	{
-		e.currentTarget.src = DEFAULT_IMG;
+		e.currentTarget.src = DEFAUT_IMG;
 	}
 
 	const genStatus = ( status ) =>
@@ -36,13 +36,16 @@ export const Products = ( props ) =>
 				<div className="p-5">
 					<div className="mb-3">
 						<Link to="/product/create" className="btn btn-info">
-							<span className="d-flex align-items-center"><i className="eva eva-plus mr-2"></i> Create</span>
+						<span className="d-flex align-items-center"><i className="eva eva-plus mr-2"></i> Create</span>
 						</Link>
 					</div>
 					<ProductSearch { ...props } />
 				</div>
 			</Widget >
 			<Widget>
+				{/* <div className="p-3">
+					<ProductSearch { ...props } />
+				</div> */}
 				<div className="widget-table-overflow p-5 mt-4">
 					<Table className={ `table-striped table-bordered table-hover ${ s.statesTable }` } responsive>
 						<thead>
@@ -68,15 +71,15 @@ export const Products = ( props ) =>
 											<td className="d-flex align-items-center">
 												<img width="70" height="70"
 													style={ { border: "0.5px solid gray", borderRadius: '5px' } }
-													src={ item.avatar } alt={ item.name } onError={ errorImg } />
+													src={ buildImage(item.avatar) } alt={ item.name } onError={ onErrorImage } />
 											</td>
 											<td className="text-gray-900">
 												<div className="d-flex">
-													<div className="font-weight-bold " style={ { minWidth: "80px" } }>Name: { item.hot && <span className="text-danger">Hot</span> }</div>
+													<div className="font-weight-bold " style={ { minWidth: "80px" } }>Name: { item.hot ? <span className="text-danger">Hot</span> : '' }</div>
 													<div className="ml-2 text-break" style={ { minWidth: '100px' } }>{ item.name }</div>
 												</div>
 												<div className="d-flex my-2">
-													<div className="font-weight-bold" style={ { minWidth: "80px" } }>sku:</div>
+													<div className="font-weight-bold" style={ { minWidth: "80px" } }>slug:</div>
 													<div className="ml-2 text-break" style={ { minWidth: '100px' } }>{ item.slug }</div>
 												</div>
 											</td>
@@ -89,14 +92,9 @@ export const Products = ( props ) =>
 												{ customDate( item.created_at, 'DD/MM/yyyy' ) }
 											</td>
 											<td>
-												<div className="d-flex">
-													<Link to={ `/product/edit/${ item.id }` } className="d-flex justify-content-center">
-														<i className="eva eva-edit" style={ { fontSize: "16px", border: "1px solid" } }></i>
-													</Link>
-													<DeleteOutlined onClick={() => props.deleteData(item.id)} className="mx-2" style={ { fontSize: "16px" } } />
-
-												</div>
-
+												<Link to={`/product/edit/${item.id}`} className="d-flex justify-content-center">
+													<i className="eva eva-edit"style={{fontSize: "16px", border: "1px solid"}}></i>
+												</Link>
 											</td>
 										</tr>
 									)

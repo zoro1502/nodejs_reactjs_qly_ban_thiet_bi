@@ -59,7 +59,7 @@ const TabProductFourteen = ( {
 							{
 								handleChangeTab( 0 )
 							} }>
-								<h4>Sản phẩm mới</h4>
+								<h4>Product new</h4>
 							</Nav.Link>
 						</Nav.Item>
 						<Nav.Item>
@@ -67,7 +67,7 @@ const TabProductFourteen = ( {
 							{
 								handleChangeTab( 1 )
 							} }>
-								<h4>Sản phẩm Hot</h4>
+								<h4>Product Hot</h4>
 							</Nav.Link>
 						</Nav.Item>
 						{/* <Nav.Item>

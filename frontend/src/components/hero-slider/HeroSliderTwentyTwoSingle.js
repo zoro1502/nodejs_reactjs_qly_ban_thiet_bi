@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { Link } from "react-router-dom";
+import { buildImage } from "../../services";
 
 const HeroSliderTwentyTwoSingle = ({ data, sliderClass }) => {
   return (
@@ -8,7 +9,7 @@ const HeroSliderTwentyTwoSingle = ({ data, sliderClass }) => {
       className={`single-slider-2 slider-height-2 d-flex align-items-center bg-img ${
         sliderClass ? sliderClass : ""
       }`}
-      style={{ backgroundImage: `url(${data.avatar})` }}
+      style={{ backgroundImage: `url(${buildImage(data.avatar)})` }}
     >
       <div className="container">
         <div className="row">

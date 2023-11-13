@@ -1,10 +1,10 @@
 // @ts-nocheck
-import { Form, Input, Select, Switch, Upload, message } from 'antd';
+import { Form, Input, Select, Switch, Upload } from 'antd';
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import React from 'react';
 import Widget from '../Widget/Widget';
-import { DEFAULT_IMG } from '../../helpers/constant/image';
+import { DEFAUT_IMG } from '../../helpers/constant/image';
 import { useForm } from 'antd/lib/form/Form';
 import { toSlug } from '../../helpers/common/common';
 import { PlusOutlined } from '@ant-design/icons';
@@ -12,7 +12,7 @@ import { submitFormProduct } from '../../services/productService';
 import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import { ROLE_SERVICE } from '../../services/rolePermissionService';
 import { USER_SERVICE, submitFormUser } from '../../services/userService';
-import { RESPONSE_API } from '../../services/common';
+import { buildImage } from '../../services/common';
 import moment from 'moment';
 export const UserForm = ( props ) =>
 {
@@ -30,9 +30,9 @@ export const UserForm = ( props ) =>
 	{
 		setStatus( [
 			{ value: 1, label: "Active" },
-			{ value: -1, label: "Inactive" }
+			{ value: 0, label: "Inactive" }
 		] );
-		getListRoles();
+		// getListRoles();
 	}, [] );
 
 	useEffect( () =>
@@ -54,20 +54,20 @@ export const UserForm = ( props ) =>
 				uid: file.length,
 				name: data.avatar,
 				status: 'done',
-				url: data.avatar || DEFAULT_IMG,
+				url: buildImage( data.avatar ),
 				default: true
 			} );
-			let role = data.roles.reduce( ( role, item ) =>
-			{
-				if ( item )
-				{
-					role.push( item.id );
-				}
-				return role;
-			}, [] );
+			// let role = data.roles?.reduce( (role, item) =>
+			// {
+			// 	if ( item )
+			// 	{
+			// 		role.push(item.id);
+			// 	}
+			// 	return role;
+			// }, [] );
 			let formValue = {
 				name: data.name,
-				username: data.username,
+				// username: data.username,
 				email: data.email,
 				address: data.address,
 				gender: data.gender,
@@ -75,7 +75,7 @@ export const UserForm = ( props ) =>
 				phone: data.phone,
 				price: data.price,
 				birthDay: data.birthDay,
-				roles: role,
+				roles: [],
 				image: file
 			}
 			setFiles( file )
@@ -129,9 +129,9 @@ export const UserForm = ( props ) =>
 
 	const submitForm = async ( e ) =>
 	{
-		const avatar = files[ 0 ].default ? [] : [].concat( files );
-		const response = await submitFormUser( id, avatar, e, dispatch, history );
-		await RESPONSE_API( response, message, id, history, 'user' );
+		delete e.username;
+		if(e?.birthDay) e.birthDay = moment(e.birthDay).format("YYYY-MM-DD HH:mm:ss");
+		await submitFormUser( id, files, e, dispatch, history );
 	}
 
 	const resetForm = () =>
@@ -156,7 +156,7 @@ export const UserForm = ( props ) =>
 	{
 		if ( e?.fileList )
 		{
-			let fileChoose = e?.fileList.map( item => item.originFileObj );
+			let fileChoose = e?.fileList;
 			setFiles( fileChoose );
 		}
 		return e?.fileList;
@@ -182,27 +182,34 @@ export const UserForm = ( props ) =>
 						</Form.Item>
 
 						<div className='row'>
-							<div className='col-md-6'>
+							{/* <div className='col-12 col-md-6'>
 								<Form.Item name="username" label="User name"
 									className=' d-block'>
-									<Input className='form-control' readOnly={id !== null} placeholder='Enter name' />
+									<Input className='form-control' placeholder='Enter name' />
+								</Form.Item>
+							</div> */}
+							<div className='col-12 col-md-6'>
+								<Form.Item name="email" label="Email"
+									rules={ [ { required: true } ] }
+									className='d-block'>
+									<Input className='form-control' readOnly={ id ? true : false } placeholder='Enter email' />
 								</Form.Item>
 							</div>
-							<div className='col-md-6'>
+							{!id && <div className='col-12 col-md-6'>
+								<Form.Item name="password" label="Password"
+									className='required d-block'>
+									<Input.Password className='form-control' placeholder='Enter password' />
+								</Form.Item>
+							</div>}
+							<div className='col-12 col-md-6'>
 								<Form.Item name="phone" label="Phone"
 									className='required d-block'>
 									<Input className='form-control' placeholder='Enter phone' />
 								</Form.Item>
 							</div>
-							<div className='col-md-6'>
-								<Form.Item name="email" label="Email"
-									rules={ [ { required: true } ] }
-									className='d-block'>
-									<Input className='form-control' placeholder='Enter name' />
-								</Form.Item>
-							</div>
 
-							<div className='col-md-6'>
+
+							<div className='col-12 col-md-6'>
 								<Form.Item
 									label="Images"
 									name="image"
@@ -222,7 +229,7 @@ export const UserForm = ( props ) =>
 							</div>
 						</div>
 						<div className='row'>
-							<div className='col-md-4'>
+							<div className='col-12 col-md-4'>
 								<Form.Item name="gender" label="Gender"
 									rules={ [ { required: true } ] } className='d-block'>
 									<Select
@@ -230,28 +237,22 @@ export const UserForm = ( props ) =>
 										style={ { width: '100%' } }
 										options={ [
 											{
-												value: 'male',
+												value: 'MALE',
 												label: 'Male'
 											},
 											{
-												value: 'female',
+												value: 'FEMALE',
 												label: 'Female'
 											},
 											{
-												value: 'other',
+												value: 'OTHER',
 												label: 'Other'
 											}
 										] }
 									/>
 								</Form.Item>
 							</div>
-							<div className='col-md-4'>
-								<Form.Item name="birthDay" label="Birthday"
-									className='d-block'>
-									<Input type='date' className='form-control' placeholder='Enter birthday' />
-								</Form.Item>
-							</div>
-							<div className='col-md-4'>
+							<div className='col-12 col-md-4'>
 								<Form.Item name="status" label="Status"
 									rules={ [ { required: true } ] } className='d-block'>
 									<Select
@@ -261,26 +262,29 @@ export const UserForm = ( props ) =>
 									/>
 								</Form.Item>
 							</div>
+							{/* <div className='col-12 col-md-4'>
+								<Form.Item name="birthDay" label="Birthday" className='d-block'>
+									<Input type='date' className='form-control' />
+								</Form.Item>
+							</div> */}
 						</div>
 						<Form.Item name="address" label="User address"
 							className=' d-block'>
 							<Input className='form-control' placeholder='Enter address' />
 						</Form.Item>
 
-						{ data?.type === 1 &&
-							<Form.Item name="roles" label="Role"
-								rules={ [ { required: true } ] } className='d-block'>
-								<Select
-									placeholder="Select role"
-									showSearch
-									mode="multiple"
-									filterOption={ ( input, option ) => ( option?.label?.toLowerCase() ).includes( input?.toLowerCase() ) }
+						{/* <Form.Item name="roles" label="Role"
+							rules={ [ { required: true } ] } className='d-block'>
+							<Select
+								placeholder="Select role"
+								showSearch
+								mode="multiple"
+								filterOption={ ( input, option ) => ( option?.label?.toLowerCase() ).includes( input?.toLowerCase() ) }
 
-									style={ { width: '100%' } }
-									options={ roles }
-								/>
-							</Form.Item> 
-							}
+								style={ { width: '100%' } }
+								options={ roles }
+							/>
+						</Form.Item> */}
 					</div>
 
 					<div className='d-flex justify-content-center'>

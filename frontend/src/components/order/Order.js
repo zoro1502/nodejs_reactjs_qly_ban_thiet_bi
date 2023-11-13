@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ORDER_SERVICE } from "../../services";
+import { ORDER_SERVICE, buildImage, onErrorImage } from "../../services";
 import { Accordion, Card, Table } from "react-bootstrap";
 import { customNumber } from "../../helpers/func";
 import { Pagination } from "antd";
@@ -26,20 +26,40 @@ const Order = (props) => {
         let eventKey = 0;
         dispatch(toggleShowLoading(true));
         const response = await ORDER_SERVICE.getList(params);
-        if (response.status == 'success') {
+        if (response?.status == 'success' && response?.data) {
             response.data.orders.map(item => {
                 item.eventKey = eventKey;
                 eventKey++;
             })
-            setOrders(response.data.orders);
-            setPaging(response.data.meta);
+            setOrders(response?.data?.orders);
+            setPaging(response?.data?.meta);
             dispatch(toggleShowLoading(false));
         }
     };
 
+	const genStatus = ( status ) =>
+	{
+		if ( status === 1 ) return <p  className="text-warning mb-0 ">Pending</p>;
+		else if ( status === 2 ) return <p className="text-primary mb-0">Approved</p>;
+		else if ( status === 3 ) return <p className="text-success mb-0">Success</p>;
+		else return <p className="text-danger mb-0">Reject/Cancel</p>;
+	}
+
+	const genPaymentStatus = ( status ) =>
+	{
+		if ( status === 1 ) return <span style={{ fontWeight: 600, fontSize: 18 }} className="text-success">Paid</span>;
+		return <span style={{ fontWeight: 600, fontSize: 18 }} className="text-primary">Unpaid</span>;
+	}
+
+	const genShippingStatus = ( status ) =>
+	{
+		if ( status === 1 ) return <span style={{ fontWeight: 600, fontSize: 18 }} className="text-warning">Waiting for delivery</span>;
+		else if ( status === 2 ) return <span style={{ fontWeight: 600, fontSize: 18 }} className="text-primary">Delivering</span>;
+		else return <span style={{ fontWeight: 600, fontSize: 18 }} className="text-success">Delivered</span>;
+	}
+
     return (
-        <>
-            <div className="myaccount-area pb-80 pt-100">
+        <div className="myaccount-area pb-80 pt-100">
                 <div className="container">
                     <div className="row">
                         <div className="ml-auto mr-auto col-lg-9">
@@ -53,11 +73,14 @@ const Order = (props) => {
                                                         <Accordion.Toggle variant="link" eventKey={String(item.eventKey)}>
                                                             <h3 className="panel-title">
                                                                 <div className="row">
-                                                                    <div className="col-sm-9">
-                                                                        Đơn hàng {item.id}
+                                                                    <div className="col-sm-6">
+                                                                        Order {item.id}
                                                                     </div>
                                                                     <div className="col-sm-3 text-right">
                                                                         {customNumber(item.total_price)}
+                                                                    </div>
+																	<div className="col-sm-3 text-right">
+                                                                        {genStatus(item.status)}
                                                                     </div>
                                                                 </div>
                                                             </h3>
@@ -81,7 +104,6 @@ const Order = (props) => {
                                                                             <th className="text-nowrap">Name</th>
                                                                             <th className="text-nowrap">Qty</th>
                                                                             <th className="text-nowrap">Price</th>
-                                                                            <th className="text-nowrap">Discount</th>
                                                                             <th className="text-nowrap">Total price</th>
                                                                         </tr>
                                                                     </thead>
@@ -93,12 +115,12 @@ const Order = (props) => {
                                                                                         {product.id}.
                                                                                     </td>
                                                                                     <td className="d-flex align-items-center">
-                                                                                        <img alt={product.name} src={product.avatar} width={90} height={90} className="mr-1" />
+                                                                                        <img alt={product.name} 
+																						src={buildImage(product.avatar)} onError={onErrorImage} width={90} height={90} className="mr-1" />
                                                                                         {product.name}
                                                                                     </td>
                                                                                     <td>{product.quantity}</td>
                                                                                     <td>{customNumber(product.price)}</td>
-                                                                                    <td>{customNumber(product.discount)}</td>
                                                                                     <td>{customNumber(product.total_price * product.quantity)}</td>
                                                                                 </tr>
                                                                             ))
@@ -120,6 +142,22 @@ const Order = (props) => {
                                                                         </div>
                                                                         <div className="col-sm-3 text-right">
                                                                             <span style={{ fontWeight: 600, fontSize: 18, color: 'red' }}>{customNumber(item.total_price)}</span>
+                                                                        </div>
+                                                                    </div>
+																	<div className="row mb-md-3 pt-md-3">
+                                                                        <div className="col-sm-9">
+                                                                            <span style={{ fontWeight: 600, fontSize: 18 }}>PAYMENT STATUS:</span>
+                                                                        </div>
+                                                                        <div className="col-sm-3 text-right">
+                                                                            {genPaymentStatus(item.payment_status)}
+                                                                        </div>
+                                                                    </div>
+																	<div className="row mb-md-3 pt-md-3">
+                                                                        <div className="col-sm-9">
+                                                                            <span style={{ fontWeight: 600, fontSize: 18 }}>SHIPPING STATUS:</span>
+                                                                        </div>
+                                                                        <div className="col-sm-3 text-right">
+																		{genShippingStatus(item.shipping_status)}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -157,7 +195,6 @@ const Order = (props) => {
                     }
                 </div>
             </div>
-        </>
     );
 }
 

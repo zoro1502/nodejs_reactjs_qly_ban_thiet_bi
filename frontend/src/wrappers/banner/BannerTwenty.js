@@ -4,7 +4,6 @@ import bannerData from "../../data/banner/banner-twenty.json";
 import BannerTwentySingle from "../../components/banner/BannerTwentySingle.js";
 
 const BannerTwenty = ({ spaceBottomClass, categories }) => {
-	console.log(categories);
 	return (
     <div className={`banner-area ${spaceBottomClass ? spaceBottomClass : ""}`}>
       <div className="row no-gutters">

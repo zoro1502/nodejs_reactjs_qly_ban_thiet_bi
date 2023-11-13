@@ -33,7 +33,7 @@ export function receiveLogout() {
 export function logoutUser() {
   return (dispatch) => {
     dispatch(requestLogout());
-    localStorage.removeItem('authenticated');
+    localStorage.removeItem('access_token_cms');
     dispatch(receiveLogout());
   };
 }

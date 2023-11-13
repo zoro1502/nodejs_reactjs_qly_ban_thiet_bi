@@ -4,19 +4,22 @@ import React, { Fragment, useEffect, useState } from "react";
 import { LightgalleryProvider, LightgalleryItem } from "react-lightgallery";
 import Swiper from "react-id-swiper";
 import { propTypes } from "react-bootstrap/esm/Image";
+import { buildImage, onErrorImage } from "../../services";
+import { checkTimeNow } from "../../helpers/func";
 
-const ProductImageGallery = ( {product, images} ) =>
+const ProductImageGallery = ( { product, images } ) =>
 {
 	const [ gallerySwiper, getGallerySwiper ] = useState( null );
 	const [ thumbnailSwiper, getThumbnailSwiper ] = useState( null );
 
-	const [loop, setLoop] = useState(4);
+	const [ loop, setLoop ] = useState( 4 );
 
-	useEffect(() => {
+	useEffect( () =>
+	{
 		// setLoop(images?.length >= 4 ? 4: 0)
-		
-	}, [images])
-	
+
+	}, [ images ] )
+
 
 	// effect for swiper slider synchronize
 	useEffect( () =>
@@ -72,12 +75,12 @@ const ProductImageGallery = ( {product, images} ) =>
 			<div className="product-large-image-wrapper">
 				{ product.sale || product.hot === 1 ? (
 					<div className="product-img-badges">
-						{ product.sale ? (
+						{ product.sale && checkTimeNow(product?.sale_to) ? (
 							<span className="pink">-{ product.sale }%</span>
 						) : (
 							""
 						) }
-						{ product.hot ===1 ? <span className="purple">Hot</span> : "" }
+						{ product.hot === 1 ? <span className="purple">Hot</span> : "" }
 					</div>
 				) : (
 					""
@@ -91,7 +94,9 @@ const ProductImageGallery = ( {product, images} ) =>
 									<div key={ key }>
 										<LightgalleryItem
 											group="any"
-											src={ single }
+											src={ buildImage( single ) }
+											alt={ buildImage( single ) }
+											onError={ onErrorImage }
 										>
 											<button>
 												<i className="pe-7s-expand1"></i>
@@ -99,14 +104,15 @@ const ProductImageGallery = ( {product, images} ) =>
 										</LightgalleryItem>
 										<div className="single-image">
 											<img
-												src={ single }
 												className="img-fluid"
-												alt=""
+												src={ buildImage( single ) }
+												alt={ buildImage( single ) }
+												onError={ onErrorImage }
 											/>
 										</div>
 									</div>
 								);
-							})
+							} )
 						}
 
 					</Swiper>
@@ -121,9 +127,11 @@ const ProductImageGallery = ( {product, images} ) =>
 								<div key={ key }>
 									<div className="single-image">
 										<img
-											src={ single }
 											className="img-fluid"
-											alt=""
+											src={ buildImage( single ) }
+											alt={ buildImage( single ) }
+											onError={ onErrorImage }
+
 										/>
 									</div>
 
@@ -140,7 +148,7 @@ const ProductImageGallery = ( {product, images} ) =>
 
 ProductImageGallery.propTypes = {
 	product: PropTypes.object,
-	images: PropTypes.arrayOf(string)
+	images: PropTypes.arrayOf( string )
 };
 
 export default ProductImageGallery;

@@ -29,11 +29,6 @@ const MobileNavMenu = ( { strings } ) =>
 						{ token ?
 							<>
 								<li>
-									<Link to={ process.env.PUBLIC_URL + "/my-order" }>
-										{ strings[ "my_order" ] }
-									</Link>
-								</li>
-								<li>
 									<Link to={ process.env.PUBLIC_URL + "/my-account" }>
 										{ strings[ "my_account" ] }
 									</Link>

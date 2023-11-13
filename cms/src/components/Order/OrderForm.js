@@ -11,6 +11,7 @@ import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import { getOrderById, updateOrder } from '../../services/orderService';
 import { Table } from 'reactstrap';
 import { toggleShowLoading } from '../../redux/actions/common';
+import { buildImage, onErrorImage } from '../../services/common';
 
 export const OrderForm = ( props ) =>
 {
@@ -30,16 +31,16 @@ export const OrderForm = ( props ) =>
 	useEffect( () =>
 	{
 		setStatus( [
-			{ value: 1, label: 'Chờ duyệt' },
-			{ value: 2, label: 'Đã duyệt' },
-			{ value: 3, label: 'Hoàn thành' },
-			{ value: 4, label: 'Hủy' },
+			{ value: 1, label: 'Pending' },
+			{ value: 2, label: 'Approved' },
+			{ value: 3, label: 'Success' },
+			{ value: 4, label: 'Reject/Cancel' },
 		] );
 
 		setShippingStatus( [
-			{ value: 1, label: 'Chờ giao' },
-			{ value: 2, label: 'Đang giao' },
-			{ value: 3, label: 'Đã giao' },
+			{ value: 1, label: 'Waiting for delivery' },
+			{ value: 2, label: 'Delivering' },
+			{ value: 3, label: 'Delivered' },
 		] )
 	}, [] );
 
@@ -73,7 +74,7 @@ export const OrderForm = ( props ) =>
 
 	const getOrderInfo = async ( id ) =>
 	{
-		await getOrderById( id, setOrderInfo );
+		await getOrderById( id, setOrderInfo, dispatch );
 	}
 
 	const validateMessages = {
@@ -91,19 +92,21 @@ export const OrderForm = ( props ) =>
 
 	const submitForm = async ( e ) =>
 	{
-		dispatch(toggleShowLoading(true));
-		const response = await updateOrder(id, e);
-		if(response.status === 'success') {
-			message.success('Update order successfully!');
-		} else {
-			message.error(response.message);
+		dispatch( toggleShowLoading( true ) );
+		const response = await updateOrder( id, e );
+		if ( response?.status === 'success' )
+		{
+			message.success( 'Update order successfully!' );
+		} else
+		{
+			message.error( response.message );
 		}
-		dispatch(toggleShowLoading(false));
+		dispatch( toggleShowLoading( false ) );
 	}
 
 	const onFieldsChange = ( e ) =>
 	{
-		if ( e.length > 0 )
+		if ( e?.length > 0 )
 		{
 			let value = typeof e[ 0 ].value == 'string' ? e[ 0 ].value : e[ 0 ].value;
 			if ( e[ 0 ].name[ 0 ] === 'name' && value != '' )
@@ -200,14 +203,16 @@ export const OrderForm = ( props ) =>
 									</tr>
 								</thead>
 								<tbody>
-									{ transactions.length > 0 &&
+									{ transactions?.length > 0 &&
 										transactions.map( ( item, index ) => 
 										{
 											return (
 												<tr key={ index }>
-													<td>{ index + 1 }</td>
+													<td className='text-center'>{ index + 1 }</td>
 													<td>{
-														<img src={ item.avatar } alt={ item.avatar } width={ 100 } height={ 100 } />
+														<img style={ { border: "1px solid", borderRadius: "10px" } } src={ buildImage( item.avatar ) }
+															alt={ item.avatar } width={ 100 }
+															height={ 100 } onError={ onErrorImage } />
 													}</td>
 													<td className='text-break' style={ { maxWidth: "200px" } }>{ item.name }</td>
 													<td className='text-right'>{ customNumber( item.price, ',', 'đ' ) }</td>
@@ -227,7 +232,11 @@ export const OrderForm = ( props ) =>
 							className=' d-block'>
 							<Input.TextArea rows={ 5 } readOnly={ isView } className='form-control' placeholder='Enter note' />
 						</Form.Item>
-
+						<Form.Item label="Payment Status">
+							<span className={ orderInfo?.payment_status === 1 ? 'text-success' : 'text-primary' }>
+								<strong>{ orderInfo?.payment_status === 1 ? 'Paid' : 'UnPaid' }</strong>
+							</span>
+						</Form.Item>
 						<div className='row'>
 							<div className='col-md-6 mb-0 d-flex'>
 								<h5 className='font-weight-normal'>Total discount:</h5>

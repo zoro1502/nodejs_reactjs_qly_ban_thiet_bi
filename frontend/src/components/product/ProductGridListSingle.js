@@ -6,7 +6,8 @@ import { useToasts } from "react-toast-notifications";
 import { getDiscountPrice } from "../../helpers/product";
 import Rating from "./sub-components/ProductRating";
 import ProductModal from "./ProductModal";
-import { customNumber } from "../../helpers/func";
+import { checkTimeNow, customNumber } from "../../helpers/func";
+import { buildImage, onErrorImage } from "../../services";
 
 const ProductGridListSingle = ( {
 	product,
@@ -24,9 +25,9 @@ const ProductGridListSingle = ( {
 	const [ modalShow, setModalShow ] = useState( false );
 	const { addToast } = useToasts();
 
-	const discountedPrice = getDiscountPrice( product.price, product.sale );
+	const discountedPrice = checkTimeNow(product?.sale_to) ? getDiscountPrice( product.price, product.sale ) : 0;
 	const finalProductPrice = +( product.price * currency.currencyRate ).toFixed( 2 );
-	const finalDiscountedPrice = +(discountedPrice * currency.currencyRate).toFixed( 2 );
+	const finalDiscountedPrice = +( discountedPrice * currency.currencyRate ).toFixed( 2 );
 
 	return (
 		<Fragment>
@@ -41,26 +42,23 @@ const ProductGridListSingle = ( {
 						<Link to={ process.env.PUBLIC_URL + "/product/" + product.id }>
 							<img
 								className="default-img"
-								src={ product.avatar }
-								alt=""
+								src={ buildImage( product.avatar ) }
+								alt={ buildImage( product.avatar ) }
+								style={{ width: "100%", height: "270px", objectFit: "cover"}}
+								onError={ onErrorImage }
 							/>
-							{ product.product_images.length > 0 ? (
+							{ product?.products_images?.length > 0 ? (
 								<img
 									className="hover-img"
-									src={ product.product_images[0].path }
+									src={ product.products_images[0].path }
 									alt=""
 								/>
 							) : (
 								""
 							) }
 						</Link>
-						{ product.sale ? (
-							<div className="product-img-badges">
-								{ product.discount ? (
-									<span className="pink">-{ product.discount }%</span>
-								) : (
-									""
-								) }
+						{ product.sale && checkTimeNow(product?.sale_to) ? (
+							<div className="product-img-badges"><span className="pink">-{ product.sale }%</span>
 								{/* {product.new ? <span className="purple">New</span> : ""} */ }
 							</div>
 						) : (
@@ -92,7 +90,7 @@ const ProductGridListSingle = ( {
 										{ " " }
 										Buy now{ " " }
 									</a>
-								) : product.variation && product.variation.length >= 1 ? (
+								) : product?.variation && product?.variation?.length >= 1 ? (
 									<Link to={ `${ process.env.PUBLIC_URL }/product/${ product.id }` }>
 										Select Option
 									</Link>
@@ -144,13 +142,13 @@ const ProductGridListSingle = ( {
 						<div className="product-price">
 							{ discountedPrice !== null ? (
 								<Fragment>
-									<span>{ customNumber(finalDiscountedPrice, 'đ')}</span>{ " " }
+									<span>{ customNumber( finalDiscountedPrice, 'đ' ) }</span>{ " " }
 									<span className="old">
-										{ customNumber(finalProductPrice , 'đ')}
+										{ customNumber( finalProductPrice, 'đ' ) }
 									</span>
 								</Fragment>
 							) : (
-								<span>{ customNumber(finalProductPrice , 'đ')} </span>
+								<span>{ customNumber( finalProductPrice, 'đ' ) } </span>
 							) }
 						</div>
 					</div>
@@ -163,14 +161,16 @@ const ProductGridListSingle = ( {
 									<Link to={ process.env.PUBLIC_URL + "/product/" + product.id }>
 										<img
 											className="default-img"
-											src={ product.avatar }
-											alt=""
+											src={ buildImage( product.avatar ) }
+											alt={ buildImage( product.avatar ) }
+											onError={ onErrorImage }
 										/>
-										{ product.product_images.length > 0 ? (
+										{ product?.products_images?.length > 0 ? (
 											<img
 												className="hover-img"
-												src={ product.product_images[ 0 ].path }
-												alt=""
+												src={ product.products_images[ 0 ].path }
+												alt={ buildImage( product.products_images[ 0 ].path  ) }
+												onError={ onErrorImage }
 											/>
 										) : (
 											""
@@ -178,7 +178,7 @@ const ProductGridListSingle = ( {
 									</Link>
 									{ product.sale || product.new ? (
 										<div className="product-img-badges">
-											{ product.sale ? (
+											{ product.sale && checkTimeNow(product?.sale_to) ? (
 												<span className="pink">-{ product.sale }%</span>
 											) : (
 												""
@@ -202,14 +202,14 @@ const ProductGridListSingle = ( {
 									{ discountedPrice !== null ? (
 										<Fragment>
 											<span>
-												{ customNumber(finalDiscountedPrice, 'đ') }
+												{ customNumber( finalDiscountedPrice, 'đ' ) }
 											</span>{ " " }
 											<span className="old">
-												{ customNumber(finalProductPrice , 'đ') }
+												{ customNumber( finalProductPrice, 'đ' ) }
 											</span>
 										</Fragment>
 									) : (
-										<span>{ customNumber(finalProductPrice , 'đ') } </span>
+										<span>{ customNumber( finalProductPrice, 'đ' ) } </span>
 									) }
 								</div>
 								{ product.rating && product.rating > 0 ? (
@@ -238,7 +238,7 @@ const ProductGridListSingle = ( {
 												{ " " }
 												Buy now{ " " }
 											</a>
-										) : product.variation && product.variation.length >= 1 ? (
+										) : product?.variation && product?.variation?.length >= 1 ? (
 											<Link
 												to={ `${ process.env.PUBLIC_URL }/product/${ product.id }` }
 											>

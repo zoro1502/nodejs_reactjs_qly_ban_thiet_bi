@@ -38,7 +38,7 @@ export const RoleForm = ( props ) =>
 	{
 		if ( data )
 		{
-			let permission = data.permissions.reduce( (per, item) =>
+			let permission = data.permissions?.reduce( (per, item) =>
 			{
 				if ( item )
 				{
@@ -59,7 +59,7 @@ export const RoleForm = ( props ) =>
 	const getListPermissions = async () =>
 	{
 		const result = await getPermissions( { page: 1, page_size: 100 });
-		if ( result )
+		if ( result?.permissions?.length  > 0 )
 		{
 			let permissionList = result.permissions.reduce( ( newPer, item ) =>
 			{

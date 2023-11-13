@@ -15,9 +15,9 @@ export const getCategories = async ( filter, setCategories ) =>
 	try
 	{
 		const response = await getCategoryList( filter );
-		if ( response.status === 'success' )
+		if ( response?.status === 'success' )
 		{
-			setCategories( response.data.categories );
+			setCategories( response?.data?.categories );
 		}
 	} catch ( error )
 	{

@@ -10,7 +10,7 @@ import { ERROR_PAYMENT, SUCCESS_PAYMENT } from "../../helpers/constant";
 
 const PaymentStatus = ( { location } ) =>
 {
-	const { pathname } = location;
+	const { pathname, search } = location;
 
 	const [ img, setImg ] = useState( null );
 	const [ title, setTitle ] = useState( '' );
@@ -23,17 +23,21 @@ const PaymentStatus = ( { location } ) =>
 		if ( params.type === 'error' )
 		{
 			setImg( ERROR_PAYMENT );
-			setTitle( 'Thất bại' );
+			setTitle( 'Failed!' );
 		} else if ( params.type === 'success' )
 		{
 			setImg( SUCCESS_PAYMENT );
-			setTitle( 'Thành công' );
+			setTitle( 'Successfully!' );
 		} else
 		{
 			setImg( SUCCESS_PAYMENT );
-			setContent( 'Thanh toán thành công' );
+			setContent( 'Payment successfully' );
 		}
-	}, [ params.type ] )
+	}, [ params.type ] );
+
+	// useEffect(() => {
+	// 	if(search != null && search)
+	// }, [search]);
 	return (
 		<Fragment>
 			<MetaTags>
@@ -62,13 +66,13 @@ const PaymentStatus = ( { location } ) =>
 										<h2 className="text-center">{ content }</h2>
 										<div className="text-center mx-auto">
 											<img src="https://img001.prntscr.com/file/img001/AezE7Si4RsWGONiW6uBeBA.png" width={ 200 } height={ 200 } />
-											<p className="mt-3">Vui lòng quét mã để có thể thanh toán</p>
+											<p className="mt-3">Please use QA code to pay order</p>
 										</div>
 
 									</div>
 
 								) : (
-									<h2 className="text-center">Thanh toán { title }</h2>
+									<h2 className="text-center">Payment { title }</h2>
 								) }
 							</div>
 						</div>

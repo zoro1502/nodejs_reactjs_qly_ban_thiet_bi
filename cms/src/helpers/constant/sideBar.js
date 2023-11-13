@@ -2,7 +2,8 @@ export const SIDE_BARS = [
 	{
 		path: '/dashboard',
 		icon: 'eva eva-home-outline',
-		title: 'Dashboard', 
+		title: 'Dashboard',
+		key: -1 
 	},
 	{
 		path: '/user',
@@ -11,13 +12,13 @@ export const SIDE_BARS = [
 		children: [
 			{
 				path: '/user/list',
-				title: 'Danh sách ',
+				title: 'list ',
 				icon: '',
 			},
 			{
 				path: '/user/create',
 				icon: '',
-				title: 'Thêm mới',
+				title: 'Add new',
 			},
 		]
 	},
@@ -28,30 +29,47 @@ export const SIDE_BARS = [
 		children: [
 			{
 				path: '/product/list',
-				title: 'Danh sách',
+				title: 'List',
 				icon: '',
 			},
 			{
 				path: '/product/create',
 				icon: '',
-				title: 'Thêm mới',
+				title: 'Add new',
 			},
 		]
 	},
 	{
 		path: '/category',
-		icon: 'eva eva-star',
+		icon: 'eva eva-sun',
 		title: 'Category',
 		children: [
 			{
 				path: '/category/list',
-				title: 'Danh sách ',
+				title: 'List ',
 				icon: '',
 			},
 			{
 				path: '/category/create',
 				icon: '',
-				title: 'Thêm mới',
+				title: 'Add new',
+			},
+		]
+	},
+	{
+		path: '/slide',
+		icon: 'eva eva-menu',
+		title: 'Slide',
+		children: [
+			{
+				path: '/slide/list',
+				title: 'List ',
+				icon: '',
+			},
+			{
+				path: '/slide/create',
+				icon: '',
+				title: 'Add new',
 			},
 		]
 	},
@@ -62,9 +80,9 @@ export const SIDE_BARS = [
 		children: [
 			{
 				path: '/order/list',
-				title: 'Danh sách',
+				title: 'List',
 				icon: '',
-			},
+			}
 		]
 	},
 	{
@@ -83,5 +101,12 @@ export const SIDE_BARS = [
 				title: 'Permissions',
 			},
 		]
-	}
+	},
+
+	{
+		path: '/reviews',
+		icon: 'eva eva-star',
+		title: 'Reviews',
+		key: -2
+	},
 ]

@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { useToasts } from "react-toast-notifications";
 import { getDiscountPrice } from "../../helpers/product";
 import ProductModal from "./ProductModal";
+import { buildImage } from "../../services";
+import { checkTimeNow } from "../../helpers/func";
 
 const ProductGridSingleThree = ({
   product,
@@ -40,22 +42,22 @@ const ProductGridSingleThree = ({
             <Link to={process.env.PUBLIC_URL + "/product/" + product.id}>
               <img
                 className="default-img"
-                src={product.avatar}
+                src={buildImage(product.avatar)}
                 alt=""
               />
-              {product?.product_images?.length > 0 ? (
+              {product?.products_images?.length > 0 ? (
                 <img
                   className="hover-img"
-                  src={product.product_images[0]}
+                  src={product.products_images[0].path}
                   alt=""
                 />
               ) : (
                 ""
               )}
             </Link>
-            {product.sale || product.hot === 1 ? (
+            {product.sale  || product.hot === 1 ? (
               <div className="product-img-badges">
-                {product.sale ? (
+                {product.sale && checkTimeNow(product?.sale_to) ? (
                   <span className="pink">-{product.sale}%</span>
                 ) : (
                   ""
