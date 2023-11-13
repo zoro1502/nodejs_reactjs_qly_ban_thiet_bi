@@ -83,6 +83,16 @@ export class AuthService {
 		return await this.userService.update(userId, data);
 
 	}
+	
+	async changePassword(userId: number, data: any) {
+		let user = await this.userRepo.findOneBy({ id: userId });
+		if (_.isEmpty(user)) {
+			throw new BadRequestException({ code: 'U0002' });
+		}
+		let newPassword = await bcrypt.hash(data.password.trim(), 10);
+		await this.userRepo.update(userId, {password: newPassword});
+		return user;
+	}
 
 	async findById(userId: number) {
 		return await this.userService.findById(userId);
@@ -103,12 +113,12 @@ export class AuthService {
 	}
 
 	async register(data: RegisterDto) {
-		// data.status = 1;
-		// await this.validateService.validateUser(data, true);
-		// delete data.password_cf;
-		// data.password = await bcrypt.hash(data.password.trim(), 10);
-		// const newData = await this.userRepo.create(data);
-		// await this.userRepo.save(newData);
+		data.status = 1;
+		await this.validateService.validateUser(data, true);
+		delete data.password_cf;
+		data.password = await bcrypt.hash(data.password.trim(), 10);
+		const newData = await this.userRepo.create(data);
+		await this.userRepo.save(newData);
 		this.mailService.sendUserConfirmation(data);
 		return data;
 	}

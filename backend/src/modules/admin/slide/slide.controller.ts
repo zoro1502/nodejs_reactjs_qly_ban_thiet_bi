@@ -16,7 +16,7 @@ export class SlideController {
         private slideService: SlideService
     ) {}
 
-    @Get('list')
+    @Get('')
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ status: 200, description: 'success' })
     async getSlides(@Request() req: any) {
@@ -51,7 +51,7 @@ export class SlideController {
         }
     }
 
-    @Post('create')
+    @Post('store')
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ status: 200, description: 'success' })
     async createSlide(@Body() createSlide: CreateSlidesDto) {
@@ -73,7 +73,7 @@ export class SlideController {
         }
     }
 
-    @Put('edit/:id')
+    @Put('update/:id')
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ status: 200, description: 'success' })
     async updateSlide(@Param('id') id: number, @Body() updateSlide: UpdateSlidesDto) {

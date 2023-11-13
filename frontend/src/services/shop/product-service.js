@@ -4,7 +4,7 @@ import { buildFilter, getMethod } from '../index'
 export const getProducts = async ( params ) =>
 {
 	let filter = buildFilter( params );
-	return await getMethod( 'product/list', filter );
+	return await getMethod( 'product', filter );
 }
 
 export const showProduct = async ( id, params ) =>
@@ -48,7 +48,7 @@ export const getProductsByFilter = async ( params, setProducts ) =>
 		const response = await getProducts( params );
 		if ( response?.status == 'success' )
 		{
-			setProducts( response?.data.products );
+			setProducts( response?.data?.products );
 		} else {
 			setProducts( null );
 		}

@@ -41,7 +41,7 @@ export const showProductDetail = async ( productId, setProductData ) =>
 		const response = await showProduct( productId );
 		if ( response?.status === 'success' )
 		{
-			setProductData( response?.data );
+			setProductData( response?.data?.product );
 		} else
 		{
 			setProductData( null );
@@ -72,7 +72,7 @@ export const getProductsByFilter = async ( params, setProducts, setPaging, dispa
 		dispatch( toggleShowLoading( false ) )
 	} catch ( error )
 	{
-		console.log( error );
+		console.log( "error product--------> ", error );
 		setProducts( [] );
 		dispatch( toggleShowLoading( false ) )
 
@@ -92,7 +92,6 @@ export const submitFormProduct = async ( id = null, files, e, dispatch, history 
 		let formValue = { ...e };
 		
 		delete formValue.image;
-		console.log(avatar);
 		formValue.avatar = avatar;
 		formValue.products_images = fileImg;
 		formValue.hot = formValue.hot ? 1 : -1;

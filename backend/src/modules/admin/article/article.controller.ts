@@ -16,7 +16,7 @@ export class ArticleController {
         private articleService: ArticleService
     ) { }
 
-    @Get('list')
+    @Get('')
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ status: 200, description: 'success' })
     async getArticles(@Request() req: any) {
@@ -49,7 +49,7 @@ export class ArticleController {
         }
     }
 
-    @Post('create')
+    @Post('store')
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ status: 200, description: 'success' })
     async createArticle(@Body() createArticle: CreateArticleDto) {
@@ -71,7 +71,7 @@ export class ArticleController {
         }
     }
 
-    @Put('edit/:id')
+    @Put('update/:id')
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ status: 200, description: 'success' })
     async updateArticle(@Param('id') id: number, @Body() updateArticle: UpdateArticleDto) {

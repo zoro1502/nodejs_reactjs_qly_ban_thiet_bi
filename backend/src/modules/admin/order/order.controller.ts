@@ -13,7 +13,7 @@ import { BaseResponse, HTTP_STATUS, IPaging } from 'src/helpers/helper';
 export class OrderController {
 	constructor(private readonly orderService: OrderService) { }
 
-	@Post('create')
+	@Post('store')
 	@UseGuards(RoleGuard)
 	async create(@Request() req: any, @Body() createOrderDto: CreateOrderDto) {
 		try {
@@ -30,7 +30,7 @@ export class OrderController {
 		}
 	}
 
-	@Get('list')
+	@Get('')
 	@UseGuards(RoleGuard)
 	async findAll(@Request() req: any) {
 		
@@ -68,7 +68,7 @@ export class OrderController {
 		}
 	}
 
-	@Put('edit/:id')
+	@Put('update/:id')
 	@UseGuards(RoleGuard)
 	async update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
 		try {

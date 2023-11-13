@@ -3,7 +3,7 @@ import { buildFilter, getMethod } from '../index'
 export const getSlides = async ( params ) =>
 {
 	let filter = buildFilter( params );
-	return await getMethod( 'slide/list', filter );
+	return await getMethod( 'slide', filter );
 }
 
 export const showSlide = async ( id, params ) =>
@@ -19,7 +19,7 @@ export const showSlideDetail = async ( productId, setSlide ) =>
 		const response = await showSlide( productId );
 		if ( response?.status == 'success' )
 		{
-			setSlide( response?.data );
+			setSlide( response?.data?.slides );
 		} else {
 			setSlide( null );
 		}

@@ -87,7 +87,7 @@ export const buildImage = ( img, is_user = false ) =>
 {
 	if ( img )
 	{
-		return process.env.REACT_APP_URL_UPLOAD + "upload/" + img;
+		return process.env.REACT_APP_URL_UPLOAD + "/upload/" + img;
 
 	} 
 	else return is_user ? DEFAULT_IMG : DEFAULT_IMAGE;

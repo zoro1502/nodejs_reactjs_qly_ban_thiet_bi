@@ -80,7 +80,7 @@ const Sidebar = ( props ) =>
 		<nav className={ cn( s.root, { [ s.sidebarOpen ]: burgerSidebarOpen } ) } >
 			<header className={ s.logo }>
 				<SofiaLogo />
-				<span className={ s.title }>Drug Store</span>
+				<span className={ s.title }>Cửa hàng điện tử</span>
 			</header>
 			<ul className={ s.nav }>
 				{

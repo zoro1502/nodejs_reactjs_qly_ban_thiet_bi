@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Form, Input, Select, Switch, Upload } from 'antd';
+import { Form, Input, Select, Switch, Table, Upload } from 'antd';
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import React from 'react';
@@ -8,12 +8,17 @@ import { DEFAUT_IMG } from '../../helpers/constant/image';
 import { useForm } from 'antd/lib/form/Form';
 import { toSlug } from '../../helpers/common/common';
 import { getCategoriesByFilter } from '../../services/categoryService';
-import { PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, PlusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { showProductDetail, submitFormProduct } from '../../services/productService';
 import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import { buildImage, timeDelay } from '../../services/common';
 import { toggleShowLoading } from '../../redux/actions/common';
 import moment from 'moment';
+
+const initOptions = [{
+	key: "",
+	value: ""
+}]
 export const ProductForm = ( props ) =>
 {
 	const [ form ] = useForm();
@@ -21,11 +26,14 @@ export const ProductForm = ( props ) =>
 	const [ hot, setHot ] = useState( [] );
 	const [ categories, setCategories ] = useState( [] );
 	const [ files, setFiles ] = useState( [] );
+	let [ attributes, setAttributes ] = useState( initOptions);
 	const [ product, setProduct ] = useState( null );
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const params = useParams();
 	const [ id, setId ] = useState( null );
+
+
 
 	useEffect( () =>
 	{
@@ -60,9 +68,9 @@ export const ProductForm = ( props ) =>
 				default: true
 			} );
 
-			if ( product?.products_images?.length > 0 )
+			if ( product?.product_images?.length > 0 )
 			{
-				file = product.products_images.reduce( ( newFile, item ) =>
+				file = product.product_images.reduce( ( newFile, item ) =>
 				{
 					if ( item )
 					{
@@ -94,7 +102,7 @@ export const ProductForm = ( props ) =>
 				image: file
 			}
 			form.setFieldsValue( formValue )
-
+			setAttributes(product?.options || initOptions)
 		}
 	}, [ product ] )
 
@@ -138,7 +146,8 @@ export const ProductForm = ( props ) =>
 
 	const submitForm = async ( e ) =>
 	{
-		await submitFormProduct( id, files, e, dispatch, history );
+		let valueAttributes = attributes?.filter(item => item.key !== "" && item.value !== "")
+		await submitFormProduct( id, files, {...e, options: valueAttributes}, dispatch, history );
 	}
 
 	const resetForm = () =>
@@ -173,7 +182,6 @@ export const ProductForm = ( props ) =>
 				item.status = 'done';
 				return item;
 			} );
-			console.log( fileChoose );
 			setFiles( fileChoose );
 		}
 		return e?.fileList;
@@ -243,6 +251,74 @@ export const ProductForm = ( props ) =>
 								placeholder='Enter description' cols={ 10 } rows={ 5 } />
 						</Form.Item>
 
+						<div className='form-group'>
+							<label >Thuộc tính</label>
+							<div className='mt-2'>
+								<div className="table-item row w-100 mx-auto" style={ { lineHeight: 3, backgroundColor: "#eef5f9", fontWeight: "700", borderBottom: "1px solid #F1F3F8" } }>
+									<div className="text-center table-item__id col-5">Key</div>
+									<div className="table-item__info col-5 text-center"
+										style={ { borderLeft: "1px solid #d9d9d9", borderRight: "1px solid #d9d9d9" } }>
+										Value
+									</div>
+									<div className="table-item__action col-2">Action</div>
+								</div>
+								{
+									attributes?.length > 0 && attributes.map( ( item, key ) =>
+									{
+										return (
+											<div key={ key } className='w-100 mx-auto'>
+
+												<div className="style-scroll" style={ { overflow: "hidden", overflowY: "auto", boxShadow: "1px 0 8px rgba(0, 0, 0, .08) inset;" } }>
+													<div className="table-item w-100 mx-auto row py-1" style={ { border: "1px solid #d9d9d9" } }>
+														<div className="text-center table-item__id col-5">
+															<input className='form-control' defaultValue={ item.key } onChange={ ( e ) =>
+															{
+																if ( e )
+																{
+																	attributes[ key ].key = e?.target?.value;
+																	setAttributes( attributes );
+																}
+															} } />
+														</div>
+														<div className="table-item__info col-5"
+															style={ { borderLeft: "1px solid #d9d9d9", borderRight: "1px solid #d9d9d9" } }>
+															<input className='form-control' defaultValue={ item.value } onChange={ ( e ) =>
+															{
+																if ( e )
+																{
+																	attributes[ key ].value = e?.target?.value;
+																	setAttributes( attributes );
+																}
+															} } />
+
+														</div>
+														<div className="table-item__action col-2 d-flex justify-content-center">
+															{attributes?.length > 1 && 
+															<DeleteOutlined className=" text-danger text-center cursor-pointer"
+															 style={{fontSize: "20px"}} onClick={() => {
+																let value = attributes.filter((e, index) => index !== key);
+																setAttributes(value)
+															 }}/> }
+														</div>
+													</div>
+												</div>
+											</div>
+										);
+									} )
+								}
+
+								<div className='mt-3'>
+									<button type='button' className='btn btn-success' onClick={ () =>
+									{
+										setAttributes( attributes.concat( { key: "", value: "" } ) )
+									} }>
+										<PlusCircleOutlined style={{fontSize: "20px"}} />
+									</button>
+								</div>
+
+							</div>
+						</div>
+
 						<div className='row'>
 
 							<div className='col-md-4'>
@@ -283,14 +359,14 @@ export const ProductForm = ( props ) =>
 								</Form.Item>
 							</div>
 
-							
+
 						</div>
 
 						<Form.Item name="hot" label="Is hot?" valuePropName="checked">
 							<Switch />
 						</Form.Item>
 
-					</div>
+					</div >
 
 					<div className='d-flex justify-content-center'>
 						<button type="submit" className="btn btn-primary text-center" style={ { marginRight: 10, padding: '10px 10px' } }>
@@ -301,9 +377,9 @@ export const ProductForm = ( props ) =>
 							<i className="nc-icon nc-refresh-02 mr-2"></i>Reset
 						</button> }
 					</div>
-				</Form>
+				</Form >
 			</Widget >
-		</div>
+		</div >
 
 	)
 }

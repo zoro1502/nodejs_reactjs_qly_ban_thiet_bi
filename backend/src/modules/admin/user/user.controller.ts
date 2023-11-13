@@ -17,7 +17,7 @@ export class UserController {
     ) {
     }
 
-    @Get('list')
+    @Get('')
 	@UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })
     async getListsUsers(
@@ -53,7 +53,7 @@ export class UserController {
         }
     }
 
-    @Post('create')
+    @Post('store')
 	@ApiResponse({ status: 200, description: 'success' })
     async create(
         @Body() userDto: CreateUserDto,
@@ -83,7 +83,7 @@ export class UserController {
         }
     }
 
-    @Put('edit/:id')
+    @Put('update/:id')
 	@ApiResponse({ status: 200, description: 'success' })
     async update(
         @Param('id') id: number,

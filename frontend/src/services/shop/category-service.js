@@ -2,7 +2,7 @@ import { getMethod } from '../index'
 
 export const getCategoryList = async ( params ) =>
 {
-	return await getMethod( 'category/list', params );
+	return await getMethod( 'category', params );
 }
 
 export const showCateGory = async ( id ) =>

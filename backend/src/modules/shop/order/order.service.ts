@@ -36,6 +36,7 @@ export class OrderService {
 		createOrderDto.user_id = user.id;
 		createOrderDto.status = 1;
 		createOrderDto.shipping_status = 1;
+		createOrderDto.payment_status = 0;
 		createOrderDto.created_at = new Date();
 		createOrderDto.updated_at = new Date();
 
@@ -166,17 +167,18 @@ export class OrderService {
 			// req.query.vnp_ResponseCode === "00" thanh toán thành công
 			const order = await this.findOne(id);
 			console.log("order=======> ", order);
-			order.status = 2 ;// Đã thanh toán
-			this.orderRepo.update(order.id, {status: 2, updated_at: new Date()});
+			// order.status = 2 ;
+			order.payment_status = 1;// Đã thanh toán;
+			this.orderRepo.update(order.id, {payment_status: 1, updated_at: new Date()});
 			if (order) {
 				this.mailService.sendOrderData(order)
 			}
 			
 
-			return res.redirect('http://localhost:3015/payment/success');
+			return res.redirect(process.env.URL_REDIRECT_FE + '/payment/success');
 		}
 
-		return res.redirect('http://localhost:3015/payment/error');
+		return res.redirect(process.env.URL_REDIRECT_FE + '/payment/error');
 		// return res.status(200).json({ data: req.query, status: 200 });
 	}
 }

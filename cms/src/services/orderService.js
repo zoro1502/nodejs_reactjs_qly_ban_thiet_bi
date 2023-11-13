@@ -7,7 +7,7 @@ import { message } from "antd";
 
 export const getOrders = async (params) => {
 	let filters = buildFilter(params);
-	return await getMethod('/admin/order/list', filters);
+	return await getMethod('/admin/order', filters);
 }
 
 export const showOrderInfo = async (id, params) => {

@@ -51,10 +51,10 @@ export class User {
 	@Column('date', { name: 'birthday', nullable: true })
 	birthDay: Date;
 
-	@Column('smallint', { name: 'status', nullable: true, default: -1 })
+	@Column('smallint', { name: 'status', nullable: true, default: 0 })
 	status: number | -1;
 
-	@Column('smallint', { name: 'type', nullable: true, default: -1 })
+	@Column('smallint', { name: 'type', nullable: true, default: 0 })
 	type: number | -1;
 
 	@Column('timestamp with time zone', {

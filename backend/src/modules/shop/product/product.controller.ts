@@ -14,7 +14,7 @@ export class ProductController {
 		private readonly adminProdService: ProductService
 	){}
 
-	@Get('list')
+	@Get('')
 	@HttpCode(HttpStatus.OK)
     @ApiResponse({ status: 200, description: 'success' })
 	async getProducts(

@@ -33,6 +33,19 @@ CREATE TABLE role_has_permissions
 );
 ALTER TABLE role_has_permissions ADD CONSTRAINT role_has_permissions_unique UNIQUE (id);
 
+CREATE TABLE votes
+(
+    id SERIAL,
+    content varchar(255) ,
+	number INTEGER NOT NULL  DEFAULT 0,
+	user_id INTEGER NOT NULL  DEFAULT 0,
+	product_id INTEGER NOT NULL  DEFAULT 0,
+    created_at timestamp(6) with time zone NOT NULL DEFAULT now(),
+    updated_at timestamp(6) with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT votes_pkey PRIMARY KEY (id)
+);
+ALTER TABLE votes ADD CONSTRAINT votes_unique UNIQUE (id);
+
 
 ALTER TABLE orders
 ADD quantity int default 0;

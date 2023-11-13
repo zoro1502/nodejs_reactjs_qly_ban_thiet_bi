@@ -18,8 +18,11 @@ export class Slide {
 	@Column('character varying', { name: 'name', nullable: true })
 	name: string | null;
 
-	@Column('smallint', { name: 'status', nullable: false, default: -1 })
-	status: number | -1;
+	@Column('smallint', { name: 'status', nullable: false, default: 0 })
+	status: number | 0;
+
+	@Column('smallint', { name: 'hot', nullable: false, default: 0 })
+	hot: number | 0;
 
 	@Column('timestamp with time zone', {
 		name: 'created_at',

@@ -17,7 +17,7 @@ export class ProductController {
 		private readonly adminProdService: ProductService
 	){}
 
-	@Post('create')
+	@Post('store')
 	@HttpCode(HttpStatus.OK)
 	@UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })
@@ -37,7 +37,7 @@ export class ProductController {
 		}
 	}
 
-	@Put('/edit/:id')
+	@Put('/update/:id')
 	@HttpCode(HttpStatus.OK)
 	@UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })
@@ -55,7 +55,7 @@ export class ProductController {
 		}
 	}
 
-	@Get('list')
+	@Get('')
 	@HttpCode(HttpStatus.OK)
 	@UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })

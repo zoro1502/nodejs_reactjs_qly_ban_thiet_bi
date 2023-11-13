@@ -25,7 +25,7 @@ const ProductGridListSingle = ( {
 	const [ modalShow, setModalShow ] = useState( false );
 	const { addToast } = useToasts();
 
-	const discountedPrice = checkTimeNow(product?.sale_to) ? getDiscountPrice( product.price, product.sale ) : 0;
+	const discountedPrice = (checkTimeNow(product?.sale_to) && product?.sale) ? getDiscountPrice( product.price, product.sale ) : 0;
 	const finalProductPrice = +( product.price * currency.currencyRate ).toFixed( 2 );
 	const finalDiscountedPrice = +( discountedPrice * currency.currencyRate ).toFixed( 2 );
 
@@ -57,7 +57,7 @@ const ProductGridListSingle = ( {
 								""
 							) }
 						</Link>
-						{ product.sale && checkTimeNow(product?.sale_to) ? (
+						{ product.sale && (checkTimeNow(product?.sale_to) && product?.sale) ? (
 							<div className="product-img-badges"><span className="pink">-{ product.sale }%</span>
 								{/* {product.new ? <span className="purple">New</span> : ""} */ }
 							</div>
@@ -178,7 +178,7 @@ const ProductGridListSingle = ( {
 									</Link>
 									{ product.sale || product.new ? (
 										<div className="product-img-badges">
-											{ product.sale && checkTimeNow(product?.sale_to) ? (
+											{ product.sale && (checkTimeNow(product?.sale_to) && product?.sale) ? (
 												<span className="pink">-{ product.sale }%</span>
 											) : (
 												""

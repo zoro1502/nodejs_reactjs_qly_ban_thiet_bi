@@ -9,7 +9,7 @@ export const VOTE_SERVICE_CMS = {
 	async getLists ( params )
 	{
 		let filters = await buildFilter( params );
-		return await getMethod( '/admin/vote/list', filters );
+		return await getMethod( '/admin/vote', filters );
 	},
 
 	async show ( id, params )

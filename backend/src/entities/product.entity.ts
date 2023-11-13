@@ -33,10 +33,10 @@ export class Products {
 	@Column('text', { name: 'content', nullable: false })
 	content: string | null;
 
-	@Column('smallint', { name: 'status', nullable: false, default: -1 })
+	@Column('smallint', { name: 'status', nullable: false, default: 0 })
 	status: number | -1;
 
-	@Column('smallint', { name: 'hot', nullable: false, default: -1 })
+	@Column('smallint', { name: 'hot', nullable: false, default: 0 })
 	hot: number;
 
 	@Column('bigint', { name: 'category_id', nullable: false })
@@ -50,6 +50,12 @@ export class Products {
 
 	@Column('int', { name: 'number', nullable: false, default: 0})
 	number: number;
+
+	@Column('int', { name: 'total_stars', nullable: false, default: 0})
+	total_stars: number;
+
+	@Column('int', { name: 'total_reviews', nullable: false, default: 0})
+	total_reviews: number;
 
 	@Column('int', { name: 'count_buy', nullable: true, default: 0})
 	count_buy: number | 0;
@@ -66,7 +72,7 @@ export class Products {
 	@Column('int', { name: 'ward_id', default: 0})
 	ward_id: number;
 
-	@Column('smallint', { name: 'sale', nullable: false, default: -1 })
+	@Column('smallint', { name: 'sale', nullable: false, default: 0 })
 	sale: number;
 
 	@Column('bigint', { name: 'user_id', nullable: false, default: 0 })

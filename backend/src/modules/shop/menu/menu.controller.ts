@@ -14,7 +14,7 @@ export class MenuController {
         private menuService: MenuService
     ) { }
 
-    @Get('list')
+    @Get('')
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ status: 200, description: 'success' })
     async getMenus(@Request() req: any) {
@@ -47,7 +47,7 @@ export class MenuController {
         }
     }
 
-    // @Post('create')
+    // @Post('store')
     // @HttpCode(HttpStatus.OK)
     // @ApiResponse({ status: 200, description: 'success' })
     // async createMenu(@Body() createMenu: CreateMenuDto) {
@@ -69,7 +69,7 @@ export class MenuController {
     //     }
     // }
 
-    // @Put('edit/:id')
+    // @Put('update/:id')
     // @HttpCode(HttpStatus.OK)
     // @ApiResponse({ status: 200, description: 'success' })
     // async updateMenu(@Param('id') id: number, @Body() updateMenu: UpdateMenuDto) {

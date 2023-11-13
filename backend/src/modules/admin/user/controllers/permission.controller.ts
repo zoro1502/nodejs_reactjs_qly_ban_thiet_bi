@@ -13,7 +13,7 @@ export class PermissionController {
 		private permissionService: PermissionService
 	) {
 	}
-	@Get('list')
+	@Get('')
 	@ApiResponse({ status: 200, description: 'success' })
 	async getListsPermissions(
 		@Req() request: any
@@ -37,7 +37,7 @@ export class PermissionController {
 		}
 	}
 
-	@Post('create')
+	@Post('store')
 	@ApiResponse({ status: 200, description: 'success' })
 	async create(
 		@Body() permissionData: PermissionDto
@@ -65,7 +65,7 @@ export class PermissionController {
 		}
 	}
 
-	@Put('edit/:id')
+	@Put('update/:id')
 	@ApiResponse({ status: 200, description: 'success' })
 	async update(
 		@Param('id') id: number,

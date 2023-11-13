@@ -28,6 +28,11 @@ export class CreateOrderDto {
 	@ApiProperty()
 	@IsInt()
 	@IsOptional()
+	payment_status?: number | 0;
+
+	@ApiProperty()
+	@IsInt()
+	@IsOptional()
 	status: number | 1;
 
 	@ApiProperty()

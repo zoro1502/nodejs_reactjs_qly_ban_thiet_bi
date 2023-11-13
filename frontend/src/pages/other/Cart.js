@@ -38,7 +38,7 @@ const Cart = ( {
 	return (
 		<Fragment>
 			<MetaTags>
-				<title>Drug store | Cart</title>
+				<title>Cửa hàng điện tử | Cart</title>
 				<meta
 					name="description"
 					content="Cart page of flone react minimalist eCommerce template."
@@ -78,10 +78,11 @@ const Cart = ( {
 													{
 														
 
-														const discountedPrice = checkTimeNow(cartItem?.sale_to) ? Number(getDiscountPrice(
+														const discountedPrice = (checkTimeNow(cartItem?.sale_to)  && cartItem.sale)? Number(getDiscountPrice(
 															cartItem.price,
 															cartItem.sale
 														)) : null;
+														
 														const finalProductPrice = (
 															cartItem.price * currency.currencyRate
 														).toFixed( 2 );
@@ -125,6 +126,7 @@ const Cart = ( {
 																		{ cartItem.name }
 																	</Link>
 																</td>
+																
 
 																<td className="product-price-cart">
 																	{ discountedPrice !== null ? (
@@ -144,6 +146,14 @@ const Cart = ( {
 																				customNumber( finalProductPrice, 'đ' ) }
 																		</span>
 																	) }
+																</td>
+
+																<td>
+																	{discountedPrice !== null ? 
+																		<span className="amount">
+																			{customNumber(finalProductPrice - finalDiscountedPrice), 'đ'}
+																		</span>
+																	: "0"}
 																</td>
 
 																<td className="product-quantity">

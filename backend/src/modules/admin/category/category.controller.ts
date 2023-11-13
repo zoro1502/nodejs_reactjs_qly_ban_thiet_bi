@@ -18,7 +18,7 @@ export class CategoryController {
         private cateService: CategoryService
     ) { }
 
-    @Get('list')
+    @Get('')
     @HttpCode(HttpStatus.OK)
 	@UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })
@@ -55,7 +55,7 @@ export class CategoryController {
         }
     }
 
-    @Post('create')
+    @Post('store')
     @HttpCode(HttpStatus.OK)
 	@UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })
@@ -78,7 +78,7 @@ export class CategoryController {
         }
     }
 
-    @Put('edit/:id')
+    @Put('update/:id')
     @HttpCode(HttpStatus.OK)
 	@UseGuards(RoleGuard)
     @ApiResponse({ status: 200, description: 'success' })

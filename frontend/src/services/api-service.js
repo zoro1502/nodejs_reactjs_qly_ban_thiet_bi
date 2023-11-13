@@ -132,7 +132,7 @@ export const uploadFile = async ( file ) =>
 	let avatar = null;
 	const formData = new FormData();
 	formData.append( 'file', file );
-	const res = await axios.post( `${ process.env.REACT_APP_URL_UPLOAD }upload/image`,
+	const res = await axios.post( `${ process.env.REACT_APP_URL_UPLOAD }/upload/image`,
 		formData, { headers: { 'Accept': 'multipart/form-data' } } );
 	let data = res.data;
 	if ( data?.status === 'success' )

@@ -1,10 +1,11 @@
-import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Put, Request, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Put, Request, Post, UseGuards } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { VoteService } from './vote.service';
 import { HTTP_STATUS, IPaging, Paging, Response, BaseResponse } from 'src/helpers/helper';
 import CreateVoteDto from './dto/createVote.dto';
 import UpdateVoteDto from './dto/updateVote.dto';
 import * as _ from 'lodash';
+import { JwtGuard } from 'src/modules/auth/guards/jwt/jwt.guard';
 
 @Controller('vote')
 @ApiTags('Shop Votes')
@@ -14,7 +15,7 @@ export class VoteController {
         private voteService: VoteService
     ) { }
 
-    @Get('list')
+    @Get('')
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ status: 200, description: 'success' })
     async getVotes(@Request() req: any) {
@@ -49,26 +50,26 @@ export class VoteController {
         }
     }
 
-    // @Post('create')
-    // @HttpCode(HttpStatus.OK)
-    // @ApiResponse({ status: 200, description: 'success' })
-    // async createVote(@Request() req: any, @Body() data: CreateVoteDto) {
-    //     try {
-    //         const { id: user_id } = req.user;
-    //         if (_.isEmpty(data)) throw new BadRequestException({code: 'F0001'});
-    //         else { 
-    //             data.user_id = user_id;
-    //             data.created_at = new Date();
-    //             data.updated_at = new Date();
-    //             return BaseResponse(HTTP_STATUS.success, await this.voteService.createVote(data), '', 'Created successfully!');
-    //         }
-    //     } catch (e) {
-    //         console.log('update category ---------------->', e.message);
-    //         return BaseResponse(e.status, e.response, e.code || 'E0001', e.message);
-    //     }
-    // }
+    @Post('store')
+    @HttpCode(HttpStatus.OK)
+	@UseGuards(JwtGuard)
+    @ApiResponse({ status: 200, description: 'success' })
+    async createVote(@Request() req: any, @Body() data: CreateVoteDto) {
+        try {
 
-    // @Put('edit/:id')
+            const { id: user_id } = req.user;
+            if (_.isEmpty(data)) throw new BadRequestException({code: 'F0001'});
+            else { 
+                data.user_id = user_id;
+                return BaseResponse(HTTP_STATUS.success, await this.voteService.createVote(data), '', 'Created successfully!');
+            }
+        } catch (e) {
+            console.log('update category ---------------->', e.message);
+            return BaseResponse(e.status, e.response, e.code || 'E0001', e.message);
+        }
+    }
+
+    // @Put('update/:id')
     // @HttpCode(HttpStatus.OK)
     // @ApiResponse({ status: 200, description: 'success' })
     // async updateVote(@Request() req: any, @Param('id') id: number, @Body() data: UpdateVoteDto) {

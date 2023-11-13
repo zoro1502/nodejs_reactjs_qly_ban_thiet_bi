@@ -56,7 +56,7 @@ const Product = ( { location } ) =>
 	return (
 		<Fragment>
 			<MetaTags>
-				<title>Drug store | Product Page</title>
+				<title>Cửa hàng điện tử | Product Page</title>
 				<meta
 					name="description"
 					content="Product page of flone react minimalist eCommerce template."

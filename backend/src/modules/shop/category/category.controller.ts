@@ -15,7 +15,7 @@ export class CategoryController {
         private cateService: CategoryService
     ) { }
 
-    @Get('list')
+    @Get('')
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ status: 200, description: 'success' })
     async getCategories(@Request() req: any) {
@@ -50,7 +50,7 @@ export class CategoryController {
         }
     }
 
-    // @Post('create')
+    // @Post('store')
     // @HttpCode(HttpStatus.OK)
     // @ApiResponse({ status: 200, description: 'success' })
     // async createCategory(@Body() createCate: CreateCategoryDto) {
@@ -72,7 +72,7 @@ export class CategoryController {
     //     }
     // }
 
-    // @Put('edit/:id')
+    // @Put('update/:id')
     // @HttpCode(HttpStatus.OK)
     // @ApiResponse({ status: 200, description: 'success' })
     // async updateCategory(@Param('id') cateId: number, @Body() updateCate: UpdateCategoryDto) {

@@ -17,7 +17,7 @@ export const LoginForm = ( props ) =>
 		dispatch(toggleShowLoading(true));
 		const response = await Auth_Service.login(e);
 		if (response?.status == 'success') {
-			localStorage.setItem('access_token', response?.data?.token_info?.accessToken);
+			localStorage.setItem('access_token', response?.data?.token_info?.access_token);
 			localStorage.setItem('name', response?.data?.user?.name);
 			localStorage.setItem('email', response?.data?.user?.email);
 			localStorage.setItem('phone', response?.data?.user?.phone);
@@ -44,7 +44,7 @@ export const LoginForm = ( props ) =>
 						validateMessages={ validateMessages }
 					>
 						<div className='mb-3'>
-							<Form.Item name="email"
+							<Form.Item name="username"
 								rules={ [ { required: true } ] }
 								className=' d-block'>
 								<Input className='mb-0' placeholder='Enter email' />

@@ -14,7 +14,7 @@ export class RoleController {
         private roleService: RoleService
     ) {
     }
-    @Get('list')
+    @Get('')
 	@ApiResponse({ status: 200, description: 'success' })
     async getListsRoles(
         @Req() request: Request
@@ -36,7 +36,7 @@ export class RoleController {
         }
     }
 
-    @Post('create')
+    @Post('store')
 	@ApiResponse({ status: 200, description: 'success' })
     async create(
         @Body() roleData: RoleDto
@@ -67,7 +67,7 @@ export class RoleController {
         }
     }
 
-    @Put('edit/:id')
+    @Put('update/:id')
 	@ApiResponse({ status: 200, description: 'success' })
     async update(
         @Param('id') id: number,

@@ -17,11 +17,6 @@ import ApexActivityChart from "./components/ActivityChart.js";
 import meal1 from "../../assets/dashboard/meal-1.svg";
 import meal2 from "../../assets/dashboard/meal-2.svg";
 import meal3 from "../../assets/dashboard/meal-3.svg";
-import upgradeImage from "../../assets/dashboard/upgradeImage.svg";
-import heartRed from "../../assets/dashboard/heartRed.svg";
-import heartTeal from "../../assets/dashboard/heartTeal.svg";
-import heartViolet from "../../assets/dashboard/heartViolet.svg";
-import heartYellow from "../../assets/dashboard/heartYellow.svg";
 
 import s from "./Dashboard.module.scss";
 import { useDispatch } from "react-redux";
@@ -59,7 +54,7 @@ const Dashboard = () =>
 
 	useEffect( () =>
 	{
-		getDashboard( {} );
+		// getDashboard( {} );
 		getTime()
 	}, [] );
 
@@ -77,11 +72,11 @@ const Dashboard = () =>
 		setOptionMonth( arrayTime )
 	}
 
-	const getDashboard = async ( filter ) =>
-	{
-		await DASHBOARD_SERVICE.getByFilter( filter, setData, dispatch );
-	}
-
+	// const getDashboard = async ( filter ) =>
+	// {
+	// 	await DASHBOARD_SERVICE.getByFilter( filter, setData, dispatch );
+	// }
+	return null
 	return (
 		<Row>
 			<Col className="pr-grid-col" xs={ 12 } lg={ 12 }>

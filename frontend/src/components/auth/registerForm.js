@@ -32,10 +32,10 @@ export const RegisterForm = ( props ) =>
 			message.error('Password does not match');
 		}
 		dispatch(toggleShowLoading(true));
-		const result = await Auth_Service.register({...e, type:"USER"});
+		const result = await Auth_Service.register({...e, type:2});
 		if(result?.status === 'success') {
 			message.success('Register successfully!');
-			window.location.href = 'login';
+			// window.location.href = 'login';
 		} else if(result?.status === 'failed') {
 			setError(result.data);
 			message.error(result.message);
@@ -63,13 +63,13 @@ export const RegisterForm = ( props ) =>
 							<Input className=' mb-0' placeholder='Enter name' />
 						</Form.Item>
 						<div className="row">
-							{/* <div className= 'col-md-6'>
-								<Form.Item name="email" label="Email"
+							<div className= 'col-md-6'>
+								<Form.Item name="username" label="User Name"
 									rules={ [ { required: true } ] }
 									className=' d-block'>
 									<Input className=' mb-0' placeholder='Enter user name' />
 								</Form.Item>
-							</div> */}
+							</div>
 							<div className= 'col-md-6'>
 								<Form.Item name="email" label="Email"
 									rules={ [ { required: true } ] }

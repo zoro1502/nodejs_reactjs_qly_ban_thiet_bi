@@ -15,6 +15,9 @@ export class CreateSlidesDto {
     @ApiProperty()
 	name: string;
 
+    @ApiProperty()
+	hot: number;
+
     @IsInt()
     @ApiProperty()
 	status: number;

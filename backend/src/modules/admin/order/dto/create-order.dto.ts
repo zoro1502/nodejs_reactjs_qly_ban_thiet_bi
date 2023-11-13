@@ -19,6 +19,10 @@ export class CreateOrderDto {
 	product_id: number = 0;
 
 	@ApiProperty()
+	payment_status: number = 0;
+
+
+	@ApiProperty()
 	quantity: number = 0;
 
 	@ApiProperty()

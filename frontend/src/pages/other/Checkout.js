@@ -17,12 +17,11 @@ const Checkout = ({ location, cartItems, currency }) => {
 	const [submit, setSubmit] = useState(false);
 	const [form, setForm] = useState({});
 
-    console.log(cartItems)
 
     return (
         <Fragment>
             <MetaTags>
-                <title>Drug store Checkout</title>
+                <title>Cửa hàng điện tử Checkout</title>
                 <meta
                     name="description"
                     content="Checkout page of shop react minimalist eCommerce template."
@@ -60,7 +59,7 @@ const Checkout = ({ location, cartItems, currency }) => {
                                                 <div className="your-order-middle">
                                                     <ul>
                                                         {cartItems.map((cartItem, key) => {
-                                                            const discountedPrice = checkTimeNow(cartItem?.sale_to) ? Number(getDiscountPrice(
+                                                            const discountedPrice = (checkTimeNow(cartItem?.sale_to)  && cartItem.sale)? Number(getDiscountPrice(
                                                                 cartItem.price,
                                                                 cartItem.sale
                                                             )) : null;

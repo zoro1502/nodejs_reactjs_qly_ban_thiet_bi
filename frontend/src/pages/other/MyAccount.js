@@ -152,7 +152,7 @@ const MyAccount = ( { location } ) =>
 	return (
 		<Fragment>
 			<MetaTags>
-				<title>Drug store | My Account</title>
+				<title>Cửa hàng điện tử | My Account</title>
 				<meta
 					name="description"
 					content="Compare page of flone react minimalist eCommerce template."

@@ -12,7 +12,7 @@ const Contact = ({ location }) => {
   return (
     <Fragment>
       <MetaTags>
-        <title>Drug store Contact</title>
+        <title>Cửa hàng điện tử Contact</title>
         <meta
           name="description"
           content="Contact of flone react minimalist eCommerce template."

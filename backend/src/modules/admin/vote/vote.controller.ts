@@ -14,7 +14,7 @@ export class VoteController {
         private voteService: VoteService
     ) { }
 
-    @Get('list')
+    @Get('')
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ status: 200, description: 'success' })
     async getVotes(@Request() req: any) {
@@ -49,7 +49,7 @@ export class VoteController {
         }
     }
 
-    @Post('create')
+    @Post('store')
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ status: 200, description: 'success' })
     async createVote(@Request() req: any, @Body() data: CreateVoteDto) {
@@ -68,7 +68,7 @@ export class VoteController {
         }
     }
 
-    @Put('edit/:id')
+    @Put('update/:id')
     @HttpCode(HttpStatus.OK)
     @ApiResponse({ status: 200, description: 'success' })
     async updateVote(@Request() req: any, @Param('id') id: number, @Body() data: UpdateVoteDto) {

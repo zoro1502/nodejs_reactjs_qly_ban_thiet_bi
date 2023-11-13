@@ -27,10 +27,10 @@ export class Article {
 	@Column('character varying', { name: 'slug', nullable: false })
 	slug: string | null;
 
-	@Column('smallint', { name: 'status', nullable: false, default: -1 })
+	@Column('smallint', { name: 'status', nullable: false, default: 0 })
 	status: number | -1;
 
-	@Column('smallint', { name: 'hot', nullable: false, default: -1 })
+	@Column('smallint', { name: 'hot', nullable: false, default: 0 })
 	hot: number | -1;
 
     @Column('text', { name: 'content' })

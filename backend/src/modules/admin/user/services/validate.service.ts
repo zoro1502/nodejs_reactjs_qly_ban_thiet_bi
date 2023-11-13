@@ -17,14 +17,13 @@ export class ValidateService {
 			throw new BadRequestException({ code: 'F0001' });
 		}
 		let errorData: any = {};
-
 		
-
 		if (isCreated) {
 			if (!userDto.username || userDto.username?.trim() == '') {
 				errorData.username = newArrayError(errorData.email, 'User name is required');
 			} else if (!regexUserName.test(userDto.username)) {
-				errorData.username = newArrayError(errorData.email, 'User name is invalid');
+				console.log(userDto.username);
+				errorData.username = newArrayError(errorData.username, 'User name is invalid');
 			} else {
 				let user = await this.userRepository.findOne({
 					where: {
@@ -32,7 +31,7 @@ export class ValidateService {
 					}
 				});
 				if (!_.isEmpty(user)) {
-					errorData.username = newArrayError(errorData.email, 'User name is existed');
+					errorData.username = newArrayError(errorData.username, 'User name is existed');
 				}
 			}
 			if (!regexPass.test(userDto.password)) {
@@ -46,7 +45,7 @@ export class ValidateService {
 		}
 
 		if (userDto.email) {
-			if ((userDto.email.includes('@gma') && !regexGmail.test(userDto.email)) || !regexEmail.test(userDto.email)) {
+			if (!regexEmail.test(userDto.email)) {
 				errorData.email = newArrayError(errorData.email, 'Email is invalid');
 			} else {
 				let userEmail: any = await this.userRepository.findOne({ where: { email: userDto.email } });

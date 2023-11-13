@@ -46,7 +46,7 @@ const ProductDescriptionInfo = ( {
 	{
 		vote_number = Number( Math.round( product?.total_stars / product?.total_reviews ) );
 	}
-	const checkTime =  checkTimeNow(product?.sale_to)
+	const checkTime =  (checkTimeNow(product?.sale_to) && product?.sale)
 	return (
 		<div className="product-details-content ml-70">
 			<h2>{ product.name }</h2>

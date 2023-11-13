@@ -16,6 +16,11 @@ export class UpdateOrderDto {
 	@ApiProperty()
 	@IsInt()
 	@IsOptional()
+	payment_status?: number | 0;
+
+	@ApiProperty()
+	@IsInt()
+	@IsOptional()
 	shipping_status?: number | 1;
 
 	@ApiProperty()

@@ -15,7 +15,7 @@ import { request } from 'http';
 export class OrderController {
 	constructor(private readonly orderService: OrderService) { }
 
-	@Post('create')
+	@Post('store')
 	@UseGuards(JwtGuard)
 	async create(@Request() req: any, @Body() createOrderDto: CreateOrderDto) {
 		try {
@@ -33,7 +33,7 @@ export class OrderController {
 		}
 	}
 
-	@Get('list')
+	@Get('')
 	@UseGuards(JwtGuard)
 	async findAll(@Request() req: any) {
 		
@@ -44,7 +44,7 @@ export class OrderController {
 			};
 			let filter = {
 				product_name: req.query.product_name || null,
-				user_id: req.query.user_id || null,
+				user_id: req.user?.id,
 				receiver_name: req.query.receiver_name || null,
 				receiver_email: req.query.receiver_email || null,
 				receiver_phone: req.query.receiver_phone || null,

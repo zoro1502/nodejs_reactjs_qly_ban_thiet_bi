@@ -28,10 +28,13 @@ export class Orders {
 	@Column('text', { name: 'note', nullable: true })
 	note: string | null;
 
-	@Column('smallint', { name: 'status', nullable: true, default: -1 })
+	@Column('smallint', { name: 'status', nullable: true, default: 0 })
 	status: number | -1;
 
-	@Column('smallint', { name: 'shipping_status', nullable: true, default: -1 })
+	@Column('smallint', { name: 'payment_status', nullable: true, default: 0 })
+	payment_status: number | 0;
+
+	@Column('smallint', { name: 'shipping_status', nullable: true, default: 0 })
 	shipping_status: number | -1;
 
 	@Column('character varying', { name: 'receiver_name', nullable: true })

@@ -17,7 +17,7 @@ export const show = async ( id, params ) =>
 export const SlideService = {
 	async getList(params) {
 		let filter = buildFilter( params );
-		return await getMethod( 'slide', filter );
+		return await getMethod( '/admin/slide', filter );
 	},
 	async show(id) {
 		return await getMethod( `/admin/slide/show/${ id }` );

@@ -76,6 +76,30 @@ export class AuthController {
 		}
 	}
 
+	@Put('/change-password')
+	@UseGuards(JwtGuard)
+	@ApiResponse({ status: 200, description: 'success' })
+	async changePassword(
+		@Request() req: any,
+		@Body() formDto: any
+	) {
+		try {
+			const user_id = req.user.id || null;
+			if(!user_id) {
+				throw new BadRequestException({ code: 'LG0401' });
+			}
+			if (_.isEmpty(formDto)) {
+				throw new BadRequestException({ code: 'F0001' });
+			}
+			const result = await this.authService.updateProfile(user_id, formDto);
+
+			return BaseResponse(HTTP_STATUS.success, result, '', 'successfully');
+		} catch (error) {
+			console.log('e@UpdateProfile----> ', error);
+			return BaseResponse(error.status, error.response, error.code || 'E0001', error.message);
+		}
+	}
+
 	@Get('/profile')
 	@UseGuards(JwtGuard)
 	@ApiResponse({ status: 200, description: 'success' })

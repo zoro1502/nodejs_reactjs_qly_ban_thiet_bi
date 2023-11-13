@@ -68,7 +68,7 @@ const ProductGridSingleTwo = ( {
 						</Link>
 						{ product.sale || product.hot === 1 ? (
 							<div className="product-img-badges">
-								{ product.sale && checkTimeNow(product?.sale_to) ? (
+								{ product.sale && (checkTimeNow(product?.sale_to) && product?.sale) ? (
 									<span className="pink">-{ product.sale }%</span>
 								) : (
 									""

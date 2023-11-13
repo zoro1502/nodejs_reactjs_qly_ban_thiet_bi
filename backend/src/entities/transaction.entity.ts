@@ -30,7 +30,7 @@ export class Transactions {
 	@Column('int', { name: 'price', nullable: false, default: 0 })
 	price: number;
 
-	@Column('smallint', { name: 'status', nullable: true, default: -1 })
+	@Column('smallint', { name: 'status', nullable: true, default: 0 })
 	status: number | -1;
 
 	@Column('character varying', { name: 'name', nullable: true, default: null })

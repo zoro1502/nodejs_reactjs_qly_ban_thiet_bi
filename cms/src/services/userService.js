@@ -37,7 +37,7 @@ export const USER_SERVICE = {
 			dispatch( toggleShowLoading( false ) );
 			if ( response?.status === 'success' )
 			{
-				return response?.data;
+				return response?.data?.user;
 			}
 			return null;
 		} catch ( error )

@@ -39,7 +39,7 @@ const HomeCakeShop = () => {
         <title>Home</title>
         <meta
           name="description"
-          content="Drug store home of flone react minimalist eCommerce template."
+          content="Cửa hàng điện tử home of flone react minimalist eCommerce template."
         />
       </MetaTags>
       <LayoutOne headerTop="visible">
